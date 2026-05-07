@@ -3,35 +3,43 @@ import sqlite3
 
 app = Flask(__name__)
 
+allowed_fields = ["stock_number", "status", "shape", "weight", "size", "color", "clarity", "cut_grade", "polish", "symmetry","fluorescence_strength", "fluorescence_color", "fancy_color", "fancy_intensity", "overtone", "measurements", "depth_percent", "table_percent","girdle", "culet", "crown_height", "crown_angle", "pavilion_depth", "pavilion_angle", "rapnet_price_per_carat", "rapnet_discount", "eye_clean","bgm", "black", "milky", "open_inclusions", "pair_number", "pair_stock_number", "pair_separable", "picture_link", "video_link"]
+
+required_fields = ["stock_number", "shape", "weight", "size", "color", "clarity", "measurements"]
+
 @app.route("/add-stone", methods=["POST"])
 def add_stone():
-    conn = sqlite3.connect("./database/app.db")
-    cursor = conn.cursor()
+    conn = None
+    try:
+        conn = sqlite3.connect("./database/app.db")
+        cursor = conn.cursor()
 
-    data = request.get_json()
+        data = request.get_json()
 
-    if not data:
-        return "No JSON provided"
-    
-    allowed_fields = ["stock_number", "status", "shape", "weight", "size", "color", "clarity", "cut_grade", "polish", "symmetry","fluorescence_strength", "fluorescence_color", "fancy_color", "fancy_intensity", "overtone", "measurements", "depth_percent", "table_percent","girdle", "culet", "crown_height", "crown_angle", "pavilion_depth", "pavilion_angle", "rapnet_price_per_carat", "rapnet_discount", "eye_clean","bgm", "black", "milky", "open_inclusions", "pair_number", "pair_stock_number", "pair_separable", "picture_link", "video_link"]
-
-    required_fields = ["stock_number", "shape", "weight", "size", "color", "clarity", "measurements"]
-    
-    for field in required_fields:
-        if field not in data:
-            return {"error": f"{field} is required"}, 400
+        if not data:
+            return {"error": "No JSON provided"}, 400
         
-    filtered_data = {k: v for k, v in data.items() if k in allowed_fields}
+        for field in required_fields:
+            if field not in data:
+                return {"error": f"{field} is required"}, 400
+            
+        filtered_data = {k: v for k, v in data.items() if k in allowed_fields}
 
-    columns = ", ".join(filtered_data.keys())
-    placeholders = ", ".join(["?"] * len(filtered_data))
-    values = list(filtered_data.values())
-    sql = f"INSERT INTO stones ({columns}) VALUES ({placeholders})"
-    cursor.execute(sql, values)
+        if not filtered_data:
+            return {"error": "No valid fields provided"}, 400
 
-    conn.commit()
-    conn.close()
-    return {"message": "Stone added"}, 201
+        columns = ", ".join(filtered_data.keys())
+        placeholders = ", ".join(["?"] * len(filtered_data))
+        values = list(filtered_data.values())
+        sql = f"INSERT INTO stones ({columns}) VALUES ({placeholders})"
+        cursor.execute(sql, values)
+
+        conn.commit()
+        return {"message": "Stone added"}, 201
+    except Exception as e:
+        return {"error": str(e)}, 400
+    finally:
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
