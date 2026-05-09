@@ -39,7 +39,25 @@ def add_stone():
     except Exception as e:
         return {"error": str(e)}, 400
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
+@app.route("/inventory", methods=["GET"])
+def inventory():
+    conn = None
+    try:
+        conn = sqlite3.connect("./database/app.db")
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM stones")
+        rows = cursor.fetchall()
+        inventory_data = [dict(row) for row in rows]
+        return inventory_data, 200
+    except Exception as e:
+        return {"error": str(e)}, 400
+    finally:
+        if conn:
+            conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
