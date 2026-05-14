@@ -6,9 +6,9 @@ CREATE TABLE stones (
 
     shape TEXT NOT NULL,
     weight REAL NOT NULL,
-    size REAL NOT NULL,
+    size TEXT NOT NULL,
 
-    color TEXT NOT NULL,
+    color_grade TEXT NOT NULL,
     clarity TEXT NOT NULL,
 
     cut_grade TEXT,
@@ -34,8 +34,8 @@ CREATE TABLE stones (
     pavilion_depth REAL,
     pavilion_angle REAL,
 
-    rapnet_price_per_carat REAL NOT NULL,
-    rapnet_discount REAL NOT NULL,
+    rapaport_price_per_carat REAL,
+    rapaport_discount REAL,
 
     eye_clean TEXT,
     bgm TEXT,

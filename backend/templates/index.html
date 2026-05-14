@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+  <h1>Home Page:</h1>
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    data-bs-toggle="modal"
+    data-bs-target="#addStoneModal"
+  >
+    Add Stone
+  </button>
+  <div class="modal fade" id="addStoneModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Stone</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form method="POST" action="{{ url_for('add_stone') }}">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Stock Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="stock_number"
+                placeholder="stock number"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" name="status">
+                <option>available</option>
+                <option>hold</option>
+                <option>for memo</option>
+                <option>memo</option>
+                <option>sold</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Shape</label>
+              <select class="form-select" name="shape">
+                <option>Round</option>
+                <option>Heart</option>
+                <option>Pear</option>
+                <option>Marqueis</option>
+                <option>Oval</option>
+                <option>Aser</option>
+                <option>Emerald</option>
+                <option>Cousand</option>
+                <option>Radiant</option>
+                <option>Princess</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Weight</label>
+              <input type="number" class="form-control" name="weight" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Size</label>
+              <select class="form-select" name="size">
+                <option>0.18-</option>
+                <option>0.18+</option>
+                <option>0.23+</option>
+                <option>0.30+</option>
+                <option>0.40+</option>
+                <option>0.45+</option>
+                <option>0.50+</option>
+                <option>0.58+</option>
+                <option>0.70+</option>
+                <option>0.78+</option>
+                <option>0.90+</option>
+                <option>0.95+</option>
+                <option>1.00+</option>
+                <option>1.20+</option>
+                <option>1.50+</option>
+                <option>2.00+</option>
+                <option>3.00+</option>
+                <option>4.00+</option>
+                <option>5.00+</option>
+                <option>6.00+</option>
+                <option>7.00+</option>
+                <option>8.00+</option>
+                <option>9.00+</option>
+                <option>10.00+</option>
+                <option>11.00+</option>
+                <option>12.00+</option>
+                <option>13.00+</option>
+                <option>14.00+</option>
+                <option>15.00+</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Color Grade</label>
+              <select class="form-select" name="color_grade">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="OP">OP</option>
+                <option value="QR">QR</option>
+                <option value="ST">ST</option>
+                <option value="UV">UV</option>
+                <option value="WX">WX</option>
+                <option value="YZ">YZ</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Clarity</label>
+              <select class="form-select" name="clarity">
+                <option>FL</option>
+                <option>IF</option>
+                <option>VVS1</option>
+                <option>VVS2</option>
+                <option>SI1</option>
+                <option>SI2</option>
+                <option>SI3</option>
+                <option>I1</option>
+                <option>I2</option>
+                <option>I3</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Measurements</label>
+              <input type="text" name="measurements" />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-secondary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

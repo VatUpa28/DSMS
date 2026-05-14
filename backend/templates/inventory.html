@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+    <h1>Inventory</h1>
+
+    <table class="table table-boarder table-striped">
+        <thead>
+            <th>Stock #</th>
+            <th>Status</th>
+            <th>Shape</th>
+            <th>Weight</Th>
+            <th>Size</Th>
+            <th>Color Grade</th>
+            <th>Clarity</th>
+            <th>Measurements</th>
+        </thead>
+
+        <tbody>
+            {% for stone in stones %}
+            <tr>
+                <td>{{ stone.stock_number }}</td>
+                <td>{{ stone.status }}</td>
+                <td>{{ stone.shape }}</td>
+                <td>{{ stone.weight }}</td>
+                <td>{{ stone.size }}</td>
+                <td>{{ stone.color_grade }}</td>
+                <td>{{ stone.clarity }}</td>
+                <td>{{ stone.measurements }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

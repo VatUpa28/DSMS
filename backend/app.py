@@ -1,11 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import sqlite3
 
 app = Flask(__name__)
 
-allowed_fields = ["stock_number", "status", "shape", "weight", "size", "color", "clarity", "cut_grade", "polish", "symmetry","fluorescence_strength", "fluorescence_color", "fancy_color", "fancy_intensity", "overtone", "measurements", "depth_percent", "table_percent","girdle", "culet", "crown_height", "crown_angle", "pavilion_depth", "pavilion_angle", "rapnet_price_per_carat", "rapnet_discount", "eye_clean","bgm", "black", "milky", "open_inclusions", "pair_number", "pair_stock_number", "pair_separable", "picture_link", "video_link"]
+allowed_fields = ["stock_number", "status", "shape", "weight", "size", "color_grade", "clarity", "cut_grade", "polish", "symmetry","fluorescence_strength", "fluorescence_color", "fancy_color", "fancy_intensity", "overtone", "measurements", "depth_percent", "table_percent","girdle", "culet", "crown_height", "crown_angle", "pavilion_depth", "pavilion_angle", "rapaport_price_per_carat", "rapaport_discount", "eye_clean","bgm", "black", "milky", "open_inclusions", "pair_number", "pair_stock_number", "pair_separable", "picture_link", "video_link"]
 
-required_fields = ["stock_number", "shape", "weight", "size", "color", "clarity", "measurements"]
+required_fields = ["stock_number", "status", "shape", "weight", "size", "color_grade", "clarity", "measurements"]
 
 @app.route("/add-stone", methods=["POST"])
 def add_stone():
@@ -14,7 +14,7 @@ def add_stone():
         conn = sqlite3.connect("./database/app.db")
         cursor = conn.cursor()
 
-        data = request.get_json()
+        data = request.form
 
         if not data:
             return {"error": "No JSON provided"}, 400
@@ -35,7 +35,7 @@ def add_stone():
         cursor.execute(sql, values)
 
         conn.commit()
-        return {"message": "Stone added"}, 201
+        return render_template("index.html")
     except Exception as e:
         return {"error": str(e)}, 400
     finally:
@@ -49,15 +49,24 @@ def inventory():
         conn = sqlite3.connect("./database/app.db")
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
+
         cursor.execute("SELECT * FROM stones")
         rows = cursor.fetchall()
+
         inventory_data = [dict(row) for row in rows]
-        return inventory_data, 200
+
+        return render_template("inventory.html", stones=inventory_data)
+
     except Exception as e:
         return {"error": str(e)}, 400
+
     finally:
         if conn:
             conn.close()
+
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
