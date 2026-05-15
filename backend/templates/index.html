@@ -29,78 +29,85 @@
                 type="text"
                 class="form-control"
                 name="stock_number"
-                placeholder="stock number"
+                required
               />
             </div>
             <div class="mb-3">
               <label class="form-label">Status</label>
-              <select class="form-select" name="status">
-                <option>available</option>
-                <option>hold</option>
-                <option>for memo</option>
-                <option>memo</option>
-                <option>sold</option>
+              <select class="form-select" name="status" required>
+                <option value="" disabled selected="selected"></option>
+                <option value="available">available</option>
+                <option value="hold">hold</option>
+                <option value="for memo">for memo</option>
+                <option value="memo">memo</option>
+                <option value="sold">sold</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Shape</label>
-              <select class="form-select" name="shape">
-                <option>Round</option>
-                <option>Heart</option>
-                <option>Pear</option>
-                <option>Marqueis</option>
-                <option>Oval</option>
-                <option>Aser</option>
-                <option>Emerald</option>
-                <option>Cousand</option>
-                <option>Radiant</option>
-                <option>Princess</option>
+              <select class="form-select" name="shape" required>
+                <option value="" disabled selected="selected"></option>
+                <option value="Round">Round</option>
+                <option value="Heart">Heart</option>
+                <option value="Pear">Pear</option>
+                <option value="Marqueis">Marqueis</option>
+                <option value="Oval">Oval</option>
+                <option value="Aser">Aser</option>
+                <option value="Emerald">Emerald</option>
+                <option value="Cousand">Cousand</option>
+                <option value="Radiant">Radiant</option>
+                <option value="Princess">Princess</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Weight</label>
-              <input type="number" class="form-control" name="weight" />
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                name="weight"
+                required
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Size</label>
-              <select class="form-select" name="size">
-                <option>0.18-</option>
-                <option>0.18+</option>
-                <option>0.23+</option>
-                <option>0.30+</option>
-                <option>0.40+</option>
-                <option>0.45+</option>
-                <option>0.50+</option>
-                <option>0.58+</option>
-                <option>0.70+</option>
-                <option>0.78+</option>
-                <option>0.90+</option>
-                <option>0.95+</option>
-                <option>1.00+</option>
-                <option>1.20+</option>
-                <option>1.50+</option>
-                <option>2.00+</option>
-                <option>3.00+</option>
-                <option>4.00+</option>
-                <option>5.00+</option>
-                <option>6.00+</option>
-                <option>7.00+</option>
-                <option>8.00+</option>
-                <option>9.00+</option>
-                <option>10.00+</option>
-                <option>11.00+</option>
-                <option>12.00+</option>
-                <option>13.00+</option>
-                <option>14.00+</option>
-                <option>15.00+</option>
+              <select class="form-select" name="size" required>
+                <option value="" disabled selected="selected"></option>
+                <option value="0.18-">0.18-</option>
+                <option value="0.18-">0.18+</option>
+                <option value="0.23+">0.23+</option>
+                <option value="0.30+">0.30+</option>
+                <option value="0.40+">0.40+</option>
+                <option value="0.45+">0.45+</option>
+                <option value="0.50+">0.50+</option>
+                <option value="0.58+">0.58+</option>
+                <option value="0.70+">0.70+</option>
+                <option value="0.78+">0.78+</option>
+                <option value="0.90+">0.90+</option>
+                <option value="0.95+">0.95+</option>
+                <option value="1.00+">1.00+</option>
+                <option value="1.20+">1.20+</option>
+                <option value="1.50+">1.50+</option>
+                <option value="2.00+">2.00+</option>
+                <option value="3.00+">3.00+</option>
+                <option value="4.00+">4.00+</option>
+                <option value="5.00+">5.00+</option>
+                <option value="6.00+">6.00+</option>
+                <option value="7.00+">7.00+</option>
+                <option value="8.00+">8.00+</option>
+                <option value="9.00+">9.00+</option>
+                <option value="10.00+">10.00+</option>
+                <option value="11.00+">11.00+</option>
+                <option value="12.00+">12.00+</option>
+                <option value="13.00+">13.00+</option>
+                <option value="14.00+">14.00+</option>
+                <option value="15.00+">15.00+</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Color Grade</label>
-              <select class="form-select" name="color_grade">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
+              <select class="form-select" name="color_grade" required>
+                <option value="" disabled selected="selected"></option>
                 <option value="D">D</option>
                 <option value="E">E</option>
                 <option value="F">F</option>
@@ -122,39 +129,337 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Clarity</label>
-              <select class="form-select" name="clarity">
-                <option>FL</option>
-                <option>IF</option>
-                <option>VVS1</option>
-                <option>VVS2</option>
-                <option>SI1</option>
-                <option>SI2</option>
-                <option>SI3</option>
-                <option>I1</option>
-                <option>I2</option>
-                <option>I3</option>
+              <select class="form-select" name="clarity" required>
+                <option value="" disabled selected="selected"></option>
+                <option value="FL">FL</option>
+                <option value="IF">IF</option>
+                <option value="VVS1">VVS1</option>
+                <option value="VVS2">VVS2</option>
+                <option value="SI1">SI1</option>
+                <option value="SI2">SI2</option>
+                <option value="SI3">SI3</option>
+                <option value="I1">I1</option>
+                <option value="I2">I2</option>
+                <option value="I3">I3</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Measurements</label>
-              <input type="text" name="measurements" />
+              <input type="text" name="measurements" required />
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-secondary">
-                Save changes
-              </button>
+
+            <div class="accordion" id="stoneaccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#cutDetails"
+                  >
+                    Cut Details
+                  </button>
+                </h2>
+
+                <div id="cutDetails" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <div class="mb-3">
+                      <label class="form-label">Cut Grade</label>
+                      <select class="form-select" name="cut_grade">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Poor">Poor</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Ideal">Ideal</option>
+                        <option value="Good">Good</option>
+                        <option value="Very">Very Good</option>
+                        <option value="Excellent">Excellent</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Polish</label>
+                      <select class="form-select" name="polish">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Poor">Poor</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Ideal">Ideal</option>
+                        <option value="Good">Good</option>
+                        <option value="Very">Very Good</option>
+                        <option value="Excellent">Excellent</option>
+                      </select>
+                      <div class="mb-3">
+                        <label class="form-label">Symmetry</label>
+                        <select class="form-select" name="symmetry">
+                          <option
+                            value=""
+                            disabled
+                            selected="selected"
+                          ></option>
+                          <option value="Poor">Poor</option>
+                          <option value="Fair">Fair</option>
+                          <option value="Ideal">Ideal</option>
+                          <option value="Good">Good</option>
+                          <option value="Very">Very Good</option>
+                          <option value="Excellent">Excellent</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#fluorescence"
+                  >
+                    Fluorescence
+                  </button>
+                </h2>
+                <div id="fluorescence" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <div class="mb-3">
+                      <label class="form-label">Strength</label>
+                      <select class="form-select" name="fluorescence_strength">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="None">None</option>
+                        <option value="Faint">Faint</option>
+                        <option value="Very">Very Slight</option>
+                        <option value="Slight">Slight</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Strong">Strong</option>
+                        <option value="Very Strong">Very Strong</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Color</label>
+                      <select class="form-select" name="fluorescence_color">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Blue">Blue</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Green">Green</option>
+                        <option value="White">White</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#fancyColor"
+                  >
+                    Fancy Color
+                  </button>
+                </h2>
+                <div id="fancyColor" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <div class="mb-3">
+                      <label class="form-label">Color</label>
+                      <select class="form-select" name="fancy_color">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Brown">Brown</option>
+                        <option value="Gray">Gray</option>
+                        <option value="Black">Black</option>
+                        <option value="Green">Green</option>
+                        <option value="Pink">Pink</option>
+                        <option value="Purple">Purple</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Orange">Orange</option>
+                        <option value="White">White</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Intensity</label>
+                      <select class="form-select" name="fancy_intensity">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Faint">Faint</option>
+                        <option value="Very Light">Very Light</option>
+                        <option value="Light">Light</option>
+                        <option value="Fancy Light">Fancy Light</option>
+                        <option value="Fancy">Fancy</option>
+                        <option value="Fancy Intense">Fancy Intense</option>
+                        <option value="Fancy Dark">Fancy Dark</option>
+                        <option value="Fancy Deep">Fancy Deep</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Overtone</label>
+                      <select class="form-select" name="overtone">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Yellowish">Yellowish</option>
+                        <option value="Brownish">Brownish</option>
+                        <option value="Grayish">Grayish</option>
+                        <option value="Greenish">Greenish</option>
+                        <option value="Pinkish">Pinkish</option>
+                        <option value="Purpleish">Purpleish</option>
+                        <option value="Blueish">Blueish</option>
+                        <option value="Orangey">Orangey</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2
+                  class="accordion-header"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#proportions"
+                >
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#proportions"
+                  >
+                    Proportions
+                  </button>
+                </h2>
+                <div id="proportions" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <div class="mb-3">
+                      <label class="form-label">Depth %</label>
+                      <input type="number" step="0.01" name="depth_percent" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Table %</label>
+                      <input type="number" step="0.01" name="table_percent" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Culet</label>
+                      <select class="form-select" name="culet">
+                        <option value="" disabled selected="selected"></option>
+                        <option value="None">None</option>
+                        <option value="Very Small">Very Small</option>
+                        <option value="Small">Small</option>
+                        <option value="Meidum">Meidum</option>
+                        <option value="Large">Large</option>
+                        <option value="Very Large">Very Large</option>
+                        <option value="Open">Open</option>
+                        <option value="Abreded">Abreded</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Girdle</label>
+                      <select
+                        class="form-select"
+                        multiple
+                        size="2"
+                        name="girdle"
+                      >
+                        <option value="" disabled selected="selected"></option>
+                        <option value="Extremely Thin">Extremely Thin</option>
+                        <option value="Very Thin">Very Thin</option>
+                        <option value="Thin">Thin</option>
+                        <option value="Meidum">Meidum</option>
+                        <option value="Thick">Thick</option>
+                        <option value="Very Thick">Very Thick</option>
+                        <option value="Extremely Thick">Extremely Thick</option>
+                      </select>
+                      <div class="mb-3">
+                        <label class="form-label">Crown Height</label>
+                        <input type="number" step="0.01" name="crown_height" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Crown Angle</label>
+                        <input type="number" step="0.01" name="crown_angle" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Pavilion Depth</label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          name="pavilion_depth"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Pavilion Angle</label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          name="pavilion_angle"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#pairing"
+                    >
+                      Pairing
+                    </button>
+                  </h2>
+                  <div id="pairing" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <div class="mb-3">
+                        <label class="form-label">Pair Number</label>
+                        <input type="text" name="pair_number" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Pair Stock Number</label>
+                        <input type="text" name="pair_stock_number" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Pair Separable</label>
+                        <input type="checkbox" name="pair_separable" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#media"
+                    >
+                      Media
+                    </button>
+                  </h2>
+                  <div id="media" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <div class="mb-3">
+                        <label class="form-label">Picture</label>
+                        <input type="text" name="picture_link" />
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Video</label>
+                        <input type="text" name="video_link" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-secondary">
+                  Save changes
+                </button>
+              </div>
             </div>
           </div>
         </form>
       </div>
     </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}

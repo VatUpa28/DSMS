@@ -42,6 +42,15 @@ def add_stone():
         if conn:
             conn.close()
 
+# @app.route("add-stones", methods=["POST"])
+# def add_stones():
+#     conn = none
+#     try:
+#         conn.commit()
+#     except Exception as e:
+#         return {"error": str(e)}, 400
+
+
 @app.route("/inventory", methods=["GET"])
 def inventory():
     conn = None

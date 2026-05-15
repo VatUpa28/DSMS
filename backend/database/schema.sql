@@ -2,7 +2,7 @@ CREATE TABLE stones (
     id INTEGER PRIMARY KEY,
     stock_number TEXT NOT NULL UNIQUE,
 
-    status TEXT NOT NULL CHECK (status IN ('available','memo','sold','returned')),
+    status TEXT NOT NULL CHECK (status IN ('available', 'hold', 'for memo', 'memo','sold')),
 
     shape TEXT NOT NULL,
     weight REAL NOT NULL,
@@ -36,6 +36,8 @@ CREATE TABLE stones (
 
     rapaport_price_per_carat REAL,
     rapaport_discount REAL,
+    price_per_carat REAL,
+    total_price REAL,
 
     eye_clean TEXT,
     bgm TEXT,
@@ -50,6 +52,12 @@ CREATE TABLE stones (
     picture_link TEXT,
     video_link TEXT
 );
+
+CREATE TABLE stone_price_history (
+    id INTEGER PRIMARY KEY,
+    stone_id TEXT,
+    
+)
 
 
 CREATE TABLE certificates (
@@ -136,9 +144,6 @@ CREATE TABLE transaction_items (
 
     transaction_id INTEGER NOT NULL,
     stone_id INTEGER NOT NULL,
-
-    price_per_carat REAL NOT NULL,
-    total_price REAL NOT NULL,
 
     status TEXT NOT NULL CHECK (status IN ('memo','invoiced','returned')),
 
