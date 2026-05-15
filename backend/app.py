@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template
 import sqlite3
+import csv
+import io
 
 app = Flask(__name__)
 
@@ -36,19 +38,59 @@ def add_stone():
 
         conn.commit()
         return render_template("index.html")
+    
     except Exception as e:
         return {"error": str(e)}, 400
+    
     finally:
         if conn:
             conn.close()
 
-# @app.route("add-stones", methods=["POST"])
-# def add_stones():
-#     conn = none
-#     try:
-#         conn.commit()
-#     except Exception as e:
-#         return {"error": str(e)}, 400
+@app.route("/add-stones", methods=["POST"])
+def add_stones():   
+    conn = none
+    try:
+        conn = sqlite3.connect("./database/app.db")
+        cursor = conn.cursor()
+
+        file = request.files["file"]
+
+        if not file:
+            return {"error": "No file uploaded"}, 400
+        
+        stream = io.StringIO(file.stream.read().decode("UTF8"))
+        csv_reader = csv.DictReader(stream)
+
+        for row in csv_reader:
+            filtered_data = {
+                k: v
+                for k, v in row.items()
+                if k in allowed_fields and v != ""
+            }
+
+        for field in required_fields:
+            if field not in filtered_data:
+                return {"error": f"{read} missing in CSV row"}, 400
+        
+        colums = ", ".join(filtered_data.keys())
+        placeholders = ", ".join(["?"] * len(filtered_data))
+        values = list(filtered_data.values)
+        
+        sql = f"""
+            INSERT INTO stones ({colums})
+            VALUES ({placeholders})
+        """
+
+        cursor.execute(sql, values)
+        conn.commit
+        return render_template("inventory.html")
+
+    except Exception as e:
+        return {"error": str(e)}, 400
+    
+    finally:
+        if conn:
+            conn.close()
 
 
 @app.route("/inventory", methods=["GET"])

@@ -9,6 +9,55 @@
   >
     Add Stone
   </button>
+  <br />
+  <br />
+
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    data-bs-toggle="modal"
+    data-bs-target="#addStonesModal"
+  >
+    Add Stones
+  </button>
+
+  <div class="modal fade" id="addStonesModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Stones</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form
+          method="POST"
+          action="{{ url_for('add_stones') }}"
+          enctype="multipart/form-data"
+        >
+          <div class="modal-body">
+            <input type="file" name="file" accept=".csv" />
+            <button type="submit">Upload CSV</button>
+          </div>
+        </form>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-secondary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="addStoneModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">

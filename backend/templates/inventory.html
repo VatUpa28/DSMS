@@ -1,33 +1,30 @@
 {% extends "base.html" %} {% block content %}
 <div class="container mt-4">
-    <h1>Inventory</h1>
+  <h1>Inventory</h1>
+  <div style="overflow-x: auto">
+    {% if stones %}
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          {% for key in stones[0].keys() %}
+          <th>{{ key }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
 
-    <table class="table table-boarder table-striped">
-        <thead>
-            <th>Stock #</th>
-            <th>Status</th>
-            <th>Shape</th>
-            <th>Weight</Th>
-            <th>Size</Th>
-            <th>Color Grade</th>
-            <th>Clarity</th>
-            <th>Measurements</th>
-        </thead>
-
-        <tbody>
-            {% for stone in stones %}
-            <tr>
-                <td>{{ stone.stock_number }}</td>
-                <td>{{ stone.status }}</td>
-                <td>{{ stone.shape }}</td>
-                <td>{{ stone.weight }}</td>
-                <td>{{ stone.size }}</td>
-                <td>{{ stone.color_grade }}</td>
-                <td>{{ stone.clarity }}</td>
-                <td>{{ stone.measurements }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <tbody>
+        {% for stone in stones %}
+        <tr>
+          {% for value in stone.values() %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+    {% else %}
+    <p>No Stones Found</p>
+    {% endif%}
+  </div>
 </div>
 {% endblock %}
