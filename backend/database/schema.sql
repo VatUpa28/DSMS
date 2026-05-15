@@ -53,12 +53,6 @@ CREATE TABLE stones (
     video_link TEXT
 );
 
-CREATE TABLE stone_price_history (
-    id INTEGER PRIMARY KEY,
-    stone_id TEXT,
-    
-)
-
 
 CREATE TABLE certificates (
     id INTEGER PRIMARY KEY,
