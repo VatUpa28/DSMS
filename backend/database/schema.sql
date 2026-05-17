@@ -11,6 +11,13 @@ CREATE TABLE stones (
     color_grade TEXT NOT NULL,
     clarity TEXT NOT NULL,
 
+    measurements TEXT NOT NULL,
+
+    rapaport_price_per_carat REAL,
+    rapaport_discount REAL,
+    price_per_carat REAL,
+    total_price REAL,c
+
     cut_grade TEXT,
     polish TEXT,
     symmetry TEXT,
@@ -22,7 +29,6 @@ CREATE TABLE stones (
     fancy_intensity TEXT,
     overtone TEXT,
 
-    measurements TEXT NOT NULL,
 
     depth_percent REAL,
     table_percent REAL,
@@ -34,11 +40,6 @@ CREATE TABLE stones (
     pavilion_depth REAL,
     pavilion_angle REAL,
 
-    rapaport_price_per_carat REAL,
-    rapaport_discount REAL,
-    price_per_carat REAL,
-    total_price REAL,
-
     eye_clean TEXT,
     bgm TEXT,
     black TEXT,
@@ -47,12 +48,33 @@ CREATE TABLE stones (
 
     pair_number TEXT,
     pair_stock_number TEXT,
-    pair_separable BOOLEAN,
+    pair_separable INTEGER,
 
     picture_link TEXT,
     video_link TEXT
 );
 
+CREATE TABLE stone_price_history (
+    id INTEGER PRIMARY KEY,
+    stone_id INTEGER NOT NULL,
+    price_per_carat REAL NOT NULL,
+    changed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (stone_id) REFERENCES stones(id)
+);
+
+CREATE TABLE rapaport_prices (
+    id INTEGER PRIMARY KEY,
+
+    shape TEXT NOT NULL,
+    clarity TEXT NOT NULL,
+    color TEXT NOT NULL,
+
+    min_weight REAL NOT NULL,
+    max_weight REAL NOT NULL,
+
+    price_per_carat REAL NOT NULL,
+    price_date DATE NOT NULL
+);
 
 CREATE TABLE certificates (
     id INTEGER PRIMARY KEY,
@@ -68,7 +90,7 @@ CREATE TABLE certificates (
 
     certificate_image_link TEXT,
 
-    active BOOLEAN NOT NULL,
+    active INTEGER NOT NULL,
 
     FOREIGN KEY (stone_id) REFERENCES stones(id) ON DELETE CASCADE
 );
