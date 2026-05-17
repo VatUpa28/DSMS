@@ -160,27 +160,8 @@ def upload_rapaport():
         cursor.execute("SELECT * FROM stones")
         stones = cursor.fetchall()
 
-        for stones in stones:
+        for stone in stones:
             recalculate_stone_price(cursor, stone)
-
-        conn.commit()
-        return redirect(url_for("inventory"))
-
-    finally:
-        conn.close()
-
-# ---------------- RAPAPORT RELOAD ----------------
-
-@app.route("/update-rapaport-price", methods=["POST"])
-def update_rapaport_price():
-    conn = sqlite3.connect("./database/app.db")
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    try:
-        cursor.execute("SELECT * FROM stones")
-        for s in cursor.fetchall():
-            recalculate_stone_price(cursor, s)
 
         conn.commit()
         return redirect(url_for("inventory"))
