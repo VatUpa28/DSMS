@@ -2,64 +2,88 @@ CREATE TABLE stones (
     id INTEGER PRIMARY KEY,
     stock_number TEXT NOT NULL UNIQUE,
 
-    status TEXT NOT NULL CHECK (status IN ('available', 'hold', 'for memo', 'memo','sold')),
+    status TEXT NOT NULL,
+
+    shade TEXT,
+    milky TEXT,
+    eye_clean TEXT,
+    bgm TEXT,
+    black TEXT,
+    open_inclusion TEXT,
+
+    pair_number TEXT,
+    pair_stock_number TEXT,
+    pair_separable INTEGER CHECK(pair_separable IN (0,1)),
+
+    picture_link TEXT,
+    video_link TEXT,
+
+    current_country TEXT,
+    current_state TEXT,
+    current_city TEXT
+);
+
+CREATE TABLE grading_reports (
+    id INTEGER PRIMARY KEY,
+    stone_id INTEGER NOT NULL,
+
+    report_number TEXT UNIQUE,
+    lab TEXT,
+    laser_inscription TEXT,
+
+    lab_comments TEXT,
+    key_to_symbols TEXT,
+    internal_comments TEXT,
+
+    certificate_image_link TEXT,
 
     shape TEXT NOT NULL,
     weight REAL NOT NULL,
-    size TEXT NOT NULL,
-
-    color_grade TEXT NOT NULL,
+    color TEXT NOT NULL,
     clarity TEXT NOT NULL,
-
-    measurements TEXT NOT NULL,
-
-    rapaport_price_per_carat REAL,
-    rapaport_discount REAL,
-    price_per_carat REAL,
-    total_price REAL,c
-
-    cut_grade TEXT,
+    cut TEXT,
     polish TEXT,
     symmetry TEXT,
-
-    fluorescence_strength TEXT,
+    size TEXT NOT NULL,
+    fluorescence_intensity TEXT,
     fluorescence_color TEXT,
-
     fancy_color TEXT,
     fancy_intensity TEXT,
     overtone TEXT,
-
-
     depth_percent REAL,
     table_percent REAL,
-    girdle TEXT,
-    culet TEXT,
+    girdle_tn TEXT,
+    girdle_thick TEXT,
+    girdle_percent REAL,
+    girdle_condition TEXT,
 
+    culet_size TEXT,
+    culet_condition TEXT,
+    
     crown_height REAL,
     crown_angle REAL,
     pavilion_depth REAL,
     pavilion_angle REAL,
 
-    eye_clean TEXT,
-    bgm TEXT,
-    black TEXT,
-    milky TEXT,
-    open_inclusions TEXT,
+    rapaport_price_per_carat REAL,
+    rapaport_discount REAL,
+    price_per_carat REAL,
+    total_price REAL,
 
-    pair_number TEXT,
-    pair_stock_number TEXT,
-    pair_separable INTEGER,
 
-    picture_link TEXT,
-    video_link TEXT
+    measurements TEXT NOT NULL,    
+
+    active INTEGER NOT NULL DEFAULT 1 CHECK(active IN(0,1)),
+
+    FOREIGN KEY (stone_id) REFERENCES stones(id) ON DELETE CASCADE
 );
 
 CREATE TABLE stone_price_history (
     id INTEGER PRIMARY KEY,
-    stone_id INTEGER NOT NULL,
+    grading_report_id INTEGER NOT NULL,
     price_per_carat REAL NOT NULL,
     changed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (stone_id) REFERENCES stones(id)
+    FOREIGN KEY (grading_report_id) REFERENCES grading_reports(id)
 );
 
 CREATE TABLE rapaport_prices (
@@ -76,24 +100,7 @@ CREATE TABLE rapaport_prices (
     price_date DATE NOT NULL
 );
 
-CREATE TABLE certificates (
-    id INTEGER PRIMARY KEY,
-    stone_id INTEGER NOT NULL,
 
-    report_number TEXT UNIQUE,
-    lab TEXT,
-    laser_inscription TEXT,
-
-    certificate_comments TEXT,
-    key_to_symbols TEXT,
-    comments TEXT,
-
-    certificate_image_link TEXT,
-
-    active INTEGER NOT NULL,
-
-    FOREIGN KEY (stone_id) REFERENCES stones(id) ON DELETE CASCADE
-);
 
 
 CREATE TABLE clients (
@@ -163,11 +170,11 @@ CREATE TABLE transaction_items (
 
     status TEXT NOT NULL CHECK (status IN ('memo','invoiced','returned')),
 
-    certificate_id INTEGER,
+    grading_report_id INTEGER,
 
     FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
     FOREIGN KEY (stone_id) REFERENCES stones(id),
-    FOREIGN KEY (certificate_id) REFERENCES certificates(id),
+    FOREIGN KEY (grading_report_id) REFERENCES grading_reports(id),
 
     UNIQUE (transaction_id, stone_id)
 );

@@ -1,3 +1,7 @@
 .inventory-table {
-    padding: 0 1vw;
+  padding: 0 1vw;
+}
+
+.dropdown-menu {
+  left: 10px !important;
 }
