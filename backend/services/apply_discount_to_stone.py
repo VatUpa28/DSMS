@@ -1,3 +1,5 @@
+from services.stone_service import recalculate_stone_price
+
 def apply_discount_to_stone(cursor, stone_id, discount):
     cursor.execute("""
         UPDATE stones

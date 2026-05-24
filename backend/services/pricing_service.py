@@ -1,3 +1,7 @@
+from utils.set_null import set_null
+from utils.get_rapaport_shape import get_rapaport_shape
+
+
 def recalculate_stone_price(cursor, stone):
 
     stone = dict(stone)
@@ -29,7 +33,7 @@ def recalculate_stone_price(cursor, stone):
         """, (
             rap_shape,
             stone["clarity"],
-            stone["color_grade"],
+            stone["color"],   # FIXED
             weight
         ))
 

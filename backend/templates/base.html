@@ -17,6 +17,7 @@
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
   </head>
@@ -24,52 +25,51 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
       <div class="container-fluid">
-        <div class="dropdown">
-          <button
-            class="navbar-brand dropdown-toggle btn btn-link text-decoration-none text-white"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            DS Management System
-          </button>
+        <!-- DROPDOWN TRIGGER -->
+        <a
+          class="navbar-brand dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          DS Management System
+        </a>
 
-          <ul class="dropdown-menu">
-            <li>
-              <button
-                class="dropdown-item"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#addStoneModal"
-              >
-                Add Stone
-              </button>
-            </li>
+        <!-- DROPDOWN MENU -->
+        <ul class="dropdown-menu">
+          <li>
+            <button
+              class="dropdown-item"
+              data-bs-toggle="modal"
+              data-bs-target="#addStoneModal"
+            >
+              Add Stone
+            </button>
+          </li>
 
-            <li>
-              <button
-                class="dropdown-item"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#addStonesModal"
-              >
-                Add Stones (CSV)
-              </button>
-            </li>
+          <li>
+            <button
+              class="dropdown-item"
+              data-bs-toggle="modal"
+              data-bs-target="#addStonesModal"
+            >
+              Add Stones (CSV)
+            </button>
+          </li>
 
-            <li>
-              <button
-                class="dropdown-item"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#uploadRapaport"
-              >
-                Upload Rapaport
-              </button>
-            </li>
-          </ul>
-        </div>
+          <li>
+            <button
+              class="dropdown-item"
+              data-bs-toggle="modal"
+              data-bs-target="#uploadRapaport"
+            >
+              Upload Rapaport
+            </button>
+          </li>
+        </ul>
 
+        <!-- NAV LINKS -->
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item">
@@ -86,7 +86,7 @@
     </nav>
 
     <div class="modal fade" id="addStoneModal" tabindex="-1">
-      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Add Stone</h5>
@@ -97,9 +97,8 @@
               aria-label="Close"
             ></button>
           </div>
-
           <form method="POST" action="{{ url_for('add_stone.add_stone') }}">
-            <div class="modal-body" style="max-height: 70vh; overflow-y: auto">
+            <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Stock Number</label>
                 <input
@@ -109,7 +108,6 @@
                   required
                 />
               </div>
-
               <div class="mb-3">
                 <label class="form-label">Status</label>
                 <select class="form-select" name="status" required>
@@ -121,270 +119,129 @@
                   <option value="sold">sold</option>
                 </select>
               </div>
+              <div class="mb-3">
+                <label class="form-label">Shape</label>
+                <select class="form-select" name="shape" required>
+                  <option value="" disabled selected="selected"></option>
+                  <option value="Round">Round</option>
+                  <option value="Heart">Heart</option>
+                  <option value="Pear">Pear</option>
+                  <option value="Marqueis">Marqueis</option>
+                  <option value="Oval">Oval</option>
+                  <option value="Aser">Aser</option>
+                  <option value="Emerald">Emerald</option>
+                  <option value="Cousand">Cousand</option>
+                  <option value="Radiant">Radiant</option>
+                  <option value="Princess">Princess</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Weight</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  name="weight"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Size</label>
+                <select class="form-select" name="size" required>
+                  <option value="" disabled selected="selected"></option>
+                  <option value="0.18-">0.18-</option>
+                  <option value="0.18-">0.18+</option>
+                  <option value="0.23+">0.23+</option>
+                  <option value="0.30+">0.30+</option>
+                  <option value="0.40+">0.40+</option>
+                  <option value="0.45+">0.45+</option>
+                  <option value="0.50+">0.50+</option>
+                  <option value="0.58+">0.58+</option>
+                  <option value="0.70+">0.70+</option>
+                  <option value="0.78+">0.78+</option>
+                  <option value="0.90+">0.90+</option>
+                  <option value="0.95+">0.95+</option>
+                  <option value="1.00+">1.00+</option>
+                  <option value="1.20+">1.20+</option>
+                  <option value="1.50+">1.50+</option>
+                  <option value="2.00+">2.00+</option>
+                  <option value="3.00+">3.00+</option>
+                  <option value="4.00+">4.00+</option>
+                  <option value="5.00+">5.00+</option>
+                  <option value="6.00+">6.00+</option>
+                  <option value="7.00+">7.00+</option>
+                  <option value="8.00+">8.00+</option>
+                  <option value="9.00+">9.00+</option>
+                  <option value="10.00+">10.00+</option>
+                  <option value="11.00+">11.00+</option>
+                  <option value="12.00+">12.00+</option>
+                  <option value="13.00+">13.00+</option>
+                  <option value="14.00+">14.00+</option>
+                  <option value="15.00+">15.00+</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Color Grade</label>
+                <select class="form-select" name="color_grade" required>
+                  <option value="" disabled selected="selected"></option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                  <option value="F">F</option>
+                  <option value="G">G</option>
+                  <option value="H">H</option>
+                  <option value="I">I</option>
+                  <option value="J">J</option>
+                  <option value="K">K</option>
+                  <option value="L">L</option>
+                  <option value="M">M</option>
+                  <option value="N">N</option>
+                  <option value="OP">OP</option>
+                  <option value="QR">QR</option>
+                  <option value="ST">ST</option>
+                  <option value="UV">UV</option>
+                  <option value="WX">WX</option>
+                  <option value="YZ">YZ</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Clarity</label>
+                <select class="form-select" name="clarity" required>
+                  <option value="" disabled selected="selected"></option>
+                  <option value="FL">FL</option>
+                  <option value="IF">IF</option>
+                  <option value="VVS1">VVS1</option>
+                  <option value="VVS2">VVS2</option>
+                  <option value="SI1">SI1</option>
+                  <option value="SI2">SI2</option>
+                  <option value="SI3">SI3</option>
+                  <option value="I1">I1</option>
+                  <option value="I2">I2</option>
+                  <option value="I3">I3</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Measurements</label>
+                <input type="text" name="measurements" required />
+              </div>
 
-              <div class="accordion" id="stoneAccordion">
+              <div class="accordion" id="stoneaccordion">
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingStoneDetails">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#stoneDetails"
-                      aria-expanded="false"
-                      aria-controls="stoneDetails"
-                    >
-                      Stone Details
-                    </button>
-                  </h2>
-
-                  <div
-                    id="stoneDetails"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingStoneDetails"
-                    data-bs-parent="#stoneAccordion"
-                  >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Shape</label>
-                        <select class="form-select" name="shape" required>
-                          <option
-                            value=""
-                            disabled
-                            selected="selected"
-                          ></option>
-                          <option value="Round">Round</option>
-                          <option value="Heart">Heart</option>
-                          <option value="Pear">Pear</option>
-                          <option value="Marqueis">Marqueis</option>
-                          <option value="Oval">Oval</option>
-                          <option value="Aser">Aser</option>
-                          <option value="Emerald">Emerald</option>
-                          <option value="Cousand">Cousand</option>
-                          <option value="Radiant">Radiant</option>
-                          <option value="Princess">Princess</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Weight</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          class="form-control"
-                          name="weight"
-                          required
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Color</label>
-                        <select class="form-select" name="color" required>
-                          <option
-                            value=""
-                            disabled
-                            selected="selected"
-                          ></option>
-                          <option value="D">D</option>
-                          <option value="E">E</option>
-                          <option value="F">F</option>
-                          <option value="G">G</option>
-                          <option value="H">H</option>
-                          <option value="I">I</option>
-                          <option value="J">J</option>
-                          <option value="K">K</option>
-                          <option value="L">L</option>
-                          <option value="M">M</option>
-                          <option value="N">N</option>
-                          <option value="OP">OP</option>
-                          <option value="QR">QR</option>
-                          <option value="ST">ST</option>
-                          <option value="UV">UV</option>
-                          <option value="WX">WX</option>
-                          <option value="YZ">YZ</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Clarity</label>
-                        <select class="form-select" name="clarity" required>
-                          <option
-                            value=""
-                            disabled
-                            selected="selected"
-                          ></option>
-                          <option value="FL">FL</option>
-                          <option value="IF">IF</option>
-                          <option value="VVS1">VVS1</option>
-                          <option value="VVS2">VVS2</option>
-                          <option value="SI1">SI1</option>
-                          <option value="SI2">SI2</option>
-                          <option value="SI3">SI3</option>
-                          <option value="I1">I1</option>
-                          <option value="I2">I2</option>
-                          <option value="I3">I3</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Measurements</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="measurements"
-                          required
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Size</label>
-                        <select class="form-select" name="size" required>
-                          <option
-                            value=""
-                            disabled
-                            selected="selected"
-                          ></option>
-                          <option value="0.18-">0.18-</option>
-                          <option value="0.18-">0.18+</option>
-                          <option value="0.23+">0.23+</option>
-                          <option value="0.30+">0.30+</option>
-                          <option value="0.40+">0.40+</option>
-                          <option value="0.45+">0.45+</option>
-                          <option value="0.50+">0.50+</option>
-                          <option value="0.58+">0.58+</option>
-                          <option value="0.70+">0.70+</option>
-                          <option value="0.78+">0.78+</option>
-                          <option value="0.90+">0.90+</option>
-                          <option value="0.95+">0.95+</option>
-                          <option value="1.00+">1.00+</option>
-                          <option value="1.20+">1.20+</option>
-                          <option value="1.50+">1.50+</option>
-                          <option value="2.00+">2.00+</option>
-                          <option value="3.00+">3.00+</option>
-                          <option value="4.00+">4.00+</option>
-                          <option value="5.00+">5.00+</option>
-                          <option value="6.00+">6.00+</option>
-                          <option value="7.00+">7.00+</option>
-                          <option value="8.00+">8.00+</option>
-                          <option value="9.00+">9.00+</option>
-                          <option value="10.00+">10.00+</option>
-                          <option value="11.00+">11.00+</option>
-                          <option value="12.00+">12.00+</option>
-                          <option value="13.00+">13.00+</option>
-                          <option value="14.00+">14.00+</option>
-                          <option value="15.00+">15.00+</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingCertification">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#certification"
-                      aria-expanded="false"
-                      aria-controls="certification"
-                    >
-                      Certification
-                    </button>
-                  </h2>
-
-                  <div
-                    id="certification"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingCertification"
-                    data-bs-parent="#stoneAccordion"
-                  >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Report Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="report_number"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Lab</label>
-                        <input type="text" class="form-control" name="lab" />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Laser Inscription</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="laser_inscription"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Lab Comments</label>
-                        <textarea
-                          class="form-control"
-                          name="lab_comments"
-                          rows="2"
-                        ></textarea>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Key to Symbols</label>
-                        <textarea
-                          class="form-control"
-                          name="key_to_symbols"
-                          rows="2"
-                        ></textarea>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Internal Comments</label>
-                        <textarea
-                          class="form-control"
-                          name="internal_comments"
-                          rows="2"
-                        ></textarea>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Certificate Image Link</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="certificate_image_link"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingCut">
+                  <h2 class="accordion-header">
                     <button
                       class="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#cutDetails"
-                      aria-expanded="false"
-                      aria-controls="cutDetails"
                     >
                       Cut Details
                     </button>
                   </h2>
 
-                  <div
-                    id="cutDetails"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingCut"
-                    data-bs-parent="#stoneAccordion"
-                  >
+                  <div id="cutDetails" class="accordion-collapse collapse">
                     <div class="accordion-body">
                       <div class="mb-3">
                         <label class="form-label">Cut Grade</label>
-                        <select class="form-select" name="cut">
+                        <select class="form-select" name="cut_grade">
                           <option
                             value=""
                             disabled
@@ -398,7 +255,6 @@
                           <option value="Excellent">Excellent</option>
                         </select>
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Polish</label>
                         <select class="form-select" name="polish">
@@ -414,54 +270,44 @@
                           <option value="Very">Very Good</option>
                           <option value="Excellent">Excellent</option>
                         </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Symmetry</label>
-                        <select class="form-select" name="symmetry">
-                          <option
-                            value=""
-                            disabled
-                            selected="selected"
-                          ></option>
-                          <option value="Poor">Poor</option>
-                          <option value="Fair">Fair</option>
-                          <option value="Ideal">Ideal</option>
-                          <option value="Good">Good</option>
-                          <option value="Very">Very Good</option>
-                          <option value="Excellent">Excellent</option>
-                        </select>
+                        <div class="mb-3">
+                          <label class="form-label">Symmetry</label>
+                          <select class="form-select" name="symmetry">
+                            <option
+                              value=""
+                              disabled
+                              selected="selected"
+                            ></option>
+                            <option value="Poor">Poor</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Ideal">Ideal</option>
+                            <option value="Good">Good</option>
+                            <option value="Very">Very Good</option>
+                            <option value="Excellent">Excellent</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingFluorescence">
+                  <h2 class="accordion-header">
                     <button
                       class="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#fluorescence"
-                      aria-expanded="false"
-                      aria-controls="fluorescence"
                     >
                       Fluorescence
                     </button>
                   </h2>
-
-                  <div
-                    id="fluorescence"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingFluorescence"
-                    data-bs-parent="#stoneAccordion"
-                  >
+                  <div id="fluorescence" class="accordion-collapse collapse">
                     <div class="accordion-body">
                       <div class="mb-3">
                         <label class="form-label">Strength</label>
                         <select
                           class="form-select"
-                          name="fluorescence_intensity"
+                          name="fluorescence_strength"
                         >
                           <option
                             value=""
@@ -477,7 +323,6 @@
                           <option value="Very Strong">Very Strong</option>
                         </select>
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Color</label>
                         <select class="form-select" name="fluorescence_color">
@@ -495,27 +340,18 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingFancy">
+                  <h2 class="accordion-header">
                     <button
                       class="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#fancyColor"
-                      aria-expanded="false"
-                      aria-controls="fancyColor"
                     >
                       Fancy Color
                     </button>
                   </h2>
-
-                  <div
-                    id="fancyColor"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingFancy"
-                    data-bs-parent="#stoneAccordion"
-                  >
+                  <div id="fancyColor" class="accordion-collapse collapse">
                     <div class="accordion-body">
                       <div class="mb-3">
                         <label class="form-label">Color</label>
@@ -537,7 +373,6 @@
                           <option value="White">White</option>
                         </select>
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Intensity</label>
                         <select class="form-select" name="fancy_intensity">
@@ -556,7 +391,6 @@
                           <option value="Fancy Deep">Fancy Deep</option>
                         </select>
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Overtone</label>
                         <select class="form-select" name="overtone">
@@ -578,48 +412,32 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingProportions">
+                  <h2
+                    class="accordion-header"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#proportions"
+                  >
                     <button
                       class="accordion-button collapsed"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#proportions"
-                      aria-expanded="false"
-                      aria-controls="proportions"
                     >
                       Proportions
                     </button>
                   </h2>
-
-                  <div
-                    id="proportions"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingProportions"
-                    data-bs-parent="#stoneAccordion"
-                  >
+                  <div id="proportions" class="accordion-collapse collapse">
                     <div class="accordion-body">
                       <div class="mb-3">
                         <label class="form-label">Depth %</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="depth_percent"
-                          class="form-control"
-                        />
+                        <input type="number" step="0.01" name="depth_percent" />
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Table %</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="table_percent"
-                          class="form-control"
-                        />
+                        <input type="number" step="0.01" name="table_percent" />
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Culet</label>
                         <select class="form-select" name="culet">
@@ -638,7 +456,6 @@
                           <option value="Abreded">Abreded</option>
                         </select>
                       </div>
-
                       <div class="mb-3">
                         <label class="form-label">Girdle</label>
                         <select
@@ -662,269 +479,104 @@
                             Extremely Thick
                           </option>
                         </select>
+                        <div class="mb-3">
+                          <label class="form-label">Crown Height</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            name="crown_height"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Crown Angle</label>
+                          <input type="number" step="0.01" name="crown_angle" />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Pavilion Depth</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            name="pavilion_depth"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Pavilion Angle</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            name="pavilion_angle"
+                          />
+                        </div>
                       </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Crown Height</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="crown_height"
-                          class="form-control"
-                        />
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#pairing"
+                      >
+                        Pairing
+                      </button>
+                    </h2>
+                    <div id="pairing" class="accordion-collapse collapse">
+                      <div class="accordion-body">
+                        <div class="mb-3">
+                          <label class="form-label">Pair Number</label>
+                          <input type="text" name="pair_number" />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Pair Stock Number</label>
+                          <input type="text" name="pair_stock_number" />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Pair Separable</label>
+                          <input type="checkbox" name="pair_separable" />
+                        </div>
                       </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Crown Angle</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="crown_angle"
-                          class="form-control"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Pavilion Depth</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="pavilion_depth"
-                          class="form-control"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Pavilion Angle</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="pavilion_angle"
-                          class="form-control"
-                        />
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#media"
+                      >
+                        Media
+                      </button>
+                    </h2>
+                    <div id="media" class="accordion-collapse collapse">
+                      <div class="accordion-body">
+                        <div class="mb-3">
+                          <label class="form-label">Picture</label>
+                          <input type="text" name="picture_link" />
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Video</label>
+                          <input type="text" name="video_link" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingClarity">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#clarityDetails"
-                      aria-expanded="false"
-                      aria-controls="clarityDetails"
-                    >
-                      Clarity Details
-                    </button>
-                  </h2>
-
-                  <div
-                    id="clarityDetails"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingClarity"
-                    data-bs-parent="#stoneAccordion"
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
                   >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Eye Clean</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="eye_clean"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">BGM</label>
-                        <input type="text" class="form-control" name="bgm" />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Black</label>
-                        <input type="text" class="form-control" name="black" />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Milky</label>
-                        <input type="text" class="form-control" name="milky" />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Open Inclusion</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="open_inclusion"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingPairing">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#pairing"
-                      aria-expanded="false"
-                      aria-controls="pairing"
-                    >
-                      Pairing
-                    </button>
-                  </h2>
-
-                  <div
-                    id="pairing"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingPairing"
-                    data-bs-parent="#stoneAccordion"
-                  >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Pair Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="pair_number"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Pair Stock Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="pair_stock_number"
-                        />
-                      </div>
-
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="pair_separable"
-                          value="1"
-                          id="pairSeparable"
-                        />
-                        <label class="form-check-label" for="pairSeparable">
-                          Pair Separable
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingMedia">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#media"
-                      aria-expanded="false"
-                      aria-controls="media"
-                    >
-                      Media
-                    </button>
-                  </h2>
-
-                  <div
-                    id="media"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingMedia"
-                    data-bs-parent="#stoneAccordion"
-                  >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Picture</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="picture_link"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">Video</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="video_link"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingLocation">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#location"
-                      aria-expanded="false"
-                      aria-controls="location"
-                    >
-                      Location
-                    </button>
-                  </h2>
-
-                  <div
-                    id="location"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingLocation"
-                    data-bs-parent="#stoneAccordion"
-                  >
-                    <div class="accordion-body">
-                      <div class="mb-3">
-                        <label class="form-label">Country</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="current_country"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">State</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="current_state"
-                        />
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label">City</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="current_city"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-secondary">
+                    Save changes
+                  </button>
                 </div>
               </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-secondary">
-                Save changes
-              </button>
             </div>
           </form>
         </div>
@@ -943,7 +595,6 @@
               aria-label="Close"
             ></button>
           </div>
-
           <form
             method="POST"
             action="{{ url_for('add_stones.add_stones') }}"
@@ -980,7 +631,6 @@
               aria-label="Close"
             ></button>
           </div>
-
           <form
             method="POST"
             action="{{ url_for('upload_rapaport.upload_rapaport') }}"
@@ -1011,7 +661,6 @@
         </div>
       </div>
     </div>
-
     {% block content %}{% endblock %}
   </body>
 </html>

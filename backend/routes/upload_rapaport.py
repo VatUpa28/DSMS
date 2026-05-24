@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, url_for
 from database.db import get_db
 from utils.process_rapaport_file import process_rapaport_file
-from utils.recalculate_stone_price import recalculate_stone_price
+from services.stone_service import recalculate_stone_price
 
 upload_rapaport_bp = Blueprint("upload_rapaport", __name__)
 
@@ -26,7 +26,7 @@ def upload_rapaport():
             recalculate_stone_price(cursor, stone)
 
         conn.commit()
-        return redirect(url_for("inventory"))
+        return redirect(url_for("inventory.inventory"))
 
     finally:
         conn.close()
