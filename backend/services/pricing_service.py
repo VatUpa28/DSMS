@@ -7,19 +7,27 @@ def recalculate_stone_price(cursor, stone):
     stone = dict(stone)
 
     try:
-        fancy = stone.get("fancy_color") or ""
+        cursor.execute("""
+            SELECT shape, weight, clarity, color
+            FROM grading_reports
+            WHERE id = ?
+        """, (stone["id"],))
 
-        if fancy.strip():
+        g = cursor.fetchone()
+
+        if not g:
+            print("[NO GRADING REPORT]", stone["id"])
             set_null(cursor, stone["id"])
             return
 
-        rap_shape = get_rapaport_shape(stone["shape"], fancy)
+        fancy = (stone.get("fancy_color") or "").strip()
 
-        if not rap_shape:
+        if fancy:
             set_null(cursor, stone["id"])
             return
 
-        weight = float(stone["weight"])
+        rap_shape = get_rapaport_shape(g["shape"], fancy)
+        weight = float(g["weight"])
 
         cursor.execute("""
             SELECT price_per_carat
@@ -32,8 +40,8 @@ def recalculate_stone_price(cursor, stone):
             LIMIT 1
         """, (
             rap_shape,
-            stone["clarity"],
-            stone["color"],   # FIXED
+            g["clarity"],
+            g["color"],
             weight
         ))
 
@@ -55,7 +63,7 @@ def recalculate_stone_price(cursor, stone):
         total = round(final_ppc * weight, 2)
 
         cursor.execute("""
-            UPDATE stones
+            UPDATE grading_reports
             SET rapaport_price_per_carat = ?,
                 price_per_carat = ?,
                 total_price = ?
@@ -63,5 +71,5 @@ def recalculate_stone_price(cursor, stone):
         """, (rap_price, final_ppc, total, stone["id"]))
 
     except Exception as e:
-        print("PRICE ENGINE ERROR:", e)
+        print("PRICE ENGINE ERROR:", repr(e))
         set_null(cursor, stone["id"])

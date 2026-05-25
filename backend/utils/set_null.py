@@ -1,6 +1,6 @@
 def set_null(cursor, stone_id):
     cursor.execute("""
-        UPDATE stones
+        UPDATE grading_reports
         SET rapaport_price_per_carat = NULL,
             price_per_carat = NULL,
             total_price = NULL

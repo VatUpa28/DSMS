@@ -42,8 +42,8 @@ csv_to_db = {
     "Pair Number": "pair_number",
     "Pair Stock": "pair_stock_number",
 
-    "Picture": "picture_link",
-    "Video": "video_link",
+    "Diamond Image": "picture_link",
+    "Diamond Video": "video_link",
 
     "Country": "current_country",
     "State": "current_state",

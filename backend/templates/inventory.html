@@ -1,23 +1,21 @@
 {% extends "base.html" %} {% block content %} {% set labels = { "stock_number":
 "Stock #", "status": "Status", "shape": "Shape", "weight": "CT", "size": "Size",
-"color_grade": "Color", "clarity": "Clarity", "cut_grade": "Cut", "polish":
-"Pol", "symmetry": "Sym", "fluorescence_strength": "Flu", "fluorescence_color":
-"Flu Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
+"color": "Color", "clarity": "Clarity", "cut": "Cut", "polish": "Pol",
+"symmetry": "Sym", "fluorescence_intensity": "Flu", "fluorescence_color": "Flu
+Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
 "OvTone", "measurements": "Meas", "depth_percent": "Depth%", "table_percent":
-"Table%", "girdle": "Girdle", "culet": "Culet", "crown_height": "Crown H",
-"crown_angle": "Crown A", "pavilion_depth": "Pav D", "pavilion_angle": "Pav A",
-"rapaport_price_per_carat": "Rap", "rapaport_discount": "Disc%",
+"Table%", "rapaport_price_per_carat": "Rap", "rapaport_discount": "Disc%",
 "price_per_carat": "p/ct", "total_price": "Total", "eye_clean": "EC", "bgm":
-"BGM", "black": "Blk", "milky": "Milky", "open_inclusions": "Open",
+"BGM", "black": "Blk", "milky": "Milky", "open_inclusion": "Open",
 "pair_number": "Pair #", "pair_stock_number": "Pair Stock", "pair_separable":
 "Sep", "picture_link": "Pic", "video_link": "Vid" } %}
 
 <div class="inventory-table mt-4">
   <h1>Inventory</h1>
 
-  <div style="overflow-x: auto">
-    {% if stones %}
+  {% if stones %}
 
+  <div style="overflow-x: auto">
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -31,15 +29,27 @@
 
       <tbody>
         {% for stone in stones %}
-          <td>{{ value }}</td>
-        {% endfor %}
+        <tr>
+          {% for key in stones[0].keys() %}
+          <td style="font-size: 12px; white-space: nowrap; padding: 6px">
+            {% set value = stone[key] %}
+            {% if value is string and (value.startswith('http://') or
+            value.startswith('https://')) %}
+            <a href="{{ value }}" target="_blank" rel="noopener noreferrer">
+              {{ value }}
+            </a>
+            {% else %} {{ value }} {% endif %}
+          </td>
+          {% endfor %}
         </tr>
+        {% endfor %}
       </tbody>
     </table>
-
-    {% else %}
-    <p>No Stones Found</p>
-    {% endif %}
   </div>
+
+  {% else %}
+  <p>No Stones Found</p>
+  {% endif %}
 </div>
+
 {% endblock %}
