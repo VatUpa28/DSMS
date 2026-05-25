@@ -32,13 +32,14 @@ Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
         <tr>
           {% for key in stones[0].keys() %}
           <td style="font-size: 12px; white-space: nowrap; padding: 6px">
-            {% set value = stone[key] %}
-            {% if value is string and (value.startswith('http://') or
-            value.startswith('https://')) %}
+            {% set value = stone[key] %} {% if value is string and
+            (value.startswith('http://') or value.startswith('https://')) %}
             <a href="{{ value }}" target="_blank" rel="noopener noreferrer">
               {{ value }}
             </a>
-            {% else %} {{ value }} {% endif %}
+
+            {% elif value is not none and value != 'None' %} {{ value }} {%
+            endif %}
           </td>
           {% endfor %}
         </tr>
