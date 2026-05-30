@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Memos</h2>
+
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMemoModal">
+      Create Memo
+    </button>
+  </div>
+
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Memo #</th>
+        <th>Client</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Stone Count</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for memo in memos %}
+      <tr>
+        <td>{{ memo.transaction_number }}</td>
+        <td>{{ memo.client_name }}</td>
+        <td>{{ memo.date }}</td>
+        <td>{{ memo.status }}</td>
+        <td>{{ memo.stone_count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+
+<!-- MODAL -->
+<form method="POST" action="{{ url_for('memos.create_memo') }}">
+
+<div class="modal fade" id="createMemoModal" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4>Create Memo</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- CLIENT -->
+        <div class="card mb-3">
+          <div class="card-header">Client</div>
+
+          <div class="card-body">
+
+            <div class="row g-2">
+
+              <div class="col-md-2">
+                <input id="client_code" class="form-control" placeholder="Client Code" required>
+              </div>
+
+              <div class="col-md-2">
+                <button type="button" class="btn btn-secondary w-100" onclick="loadClient()">
+                  Load
+                </button>
+              </div>
+
+              <div class="col-md-4">
+                <input id="client_name" name="client_name" class="form-control" placeholder="Company">
+              </div>
+
+              <div class="col-md-4">
+                <textarea id="client_address" name="client_address" class="form-control"></textarea>
+              </div>
+
+            </div>
+
+            <input type="hidden" name="client_id" id="client_id">
+
+          </div>
+        </div>
+
+        <!-- SHIPPING -->
+        <div class="card mb-3">
+          <div class="card-header">Shipping</div>
+
+          <div class="card-body">
+
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="alt_ship" onchange="toggleShipping()">
+              <label class="form-check-label">Use Alternate Shipping</label>
+            </div>
+
+            <textarea id="ship_to_address" name="ship_to_address" class="form-control"></textarea>
+
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2"
+                    onclick="openShippingModal()">
+              Choose Address
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STONES -->
+        <div class="card">
+          <div class="card-header">Stones</div>
+
+          <div class="card-body" style="max-height: 500px; overflow-y: auto">
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Stock</th>
+                  <th>Shape</th>
+                  <th>CT</th>
+                  <th>Color</th>
+                  <th>Clarity</th>
+                  <th>PPC</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for stone in available_stones %}
+                <tr>
+                  <td>
+                    <input type="checkbox" name="stone_ids" value="{{ stone.id }}">
+                  </td>
+                  <td>{{ stone.stock_number }}</td>
+                  <td>{{ stone.shape }}</td>
+                  <td>{{ stone.weight }}</td>
+                  <td>{{ stone.color }}</td>
+                  <td>{{ stone.clarity }}</td>
+                  <td>{{ stone.price_per_carat }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Memo</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</form>
+
+<!-- SHIPPING MODAL -->
+<div class="modal fade" id="shippingModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5>Select Shipping Address</h5>
+      </div>
+
+      <div class="modal-body">
+        <table class="table">
+          <tbody id="shipping_list"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

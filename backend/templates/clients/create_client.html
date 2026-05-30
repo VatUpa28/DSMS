@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Create Client</h3>
+
+    <form method="POST">
+
+        <div class="row g-2">
+
+            <div class="col-md-4">
+                <input name="code" class="form-control" placeholder="Client Code" required>
+            </div>
+
+            <div class="col-md-4">
+                <input name="name" class="form-control" placeholder="Client Name" required>
+            </div>
+
+            <div class="col-md-4">
+                <input name="address" class="form-control" placeholder="Address" required>
+            </div>
+
+            <div class="col-md-4">
+                <input name="polygon_id" type="number" class="form-control" placeholder="Polygon ID">
+            </div>
+
+            <div class="col-md-4">
+                <input name="jbt_id" type="number" class="form-control" placeholder="JBT ID">
+            </div>
+
+            <div class="col-md-4">
+                <input name="rapnet_id" type="number" class="form-control" placeholder="Rapnet ID">
+            </div>
+
+            <div class="col-md-6">
+                <input name="tax_id" class="form-control" placeholder="Tax ID" required>
+            </div>
+
+            <div class="col-md-6">
+                <input name="sales_tax_id" class="form-control" placeholder="Sales Tax ID" required>
+            </div>
+
+        </div>
+
+        <button class="btn btn-success mt-3">Create Client</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

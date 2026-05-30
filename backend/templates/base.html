@@ -67,6 +67,15 @@
               Upload Rapaport
             </button>
           </li>
+          <li>
+            <button
+              class="dropdown-item"
+              data-bs-toggle="modal"
+              data-bs-target="#uploadDiscount"
+            >
+              Upload Discounts
+            </button>
+          </li>
         </ul>
 
         <!-- NAV LINKS -->
@@ -78,6 +87,16 @@
                 href="{{ url_for('inventory.inventory') }}"
               >
                 Inventory
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5" href="{{ url_for('clients.clients') }}"
+                >Clients</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5" href="{{ url_for('memos.memos') }}">
+                Memos
               </a>
             </li>
           </ul>
@@ -661,6 +680,68 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="uploadDiscount" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Discounts</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <form
+            method="POST"
+            action="{{ url_for('discount.upload_discount') }}"
+            enctype="multipart/form-data"
+          >
+            <div class="modal-body">
+              <label class="form-label">Mode</label>
+
+              <select class="form-select mb-3" name="mode" required>
+                <option value="" disabled selected>Select Mode</option>
+
+                <option value="set">Set Matching Stones</option>
+
+                <option value="offset">Offset Matching Stones</option>
+
+                <option value="set_all">Set Entire Inventory</option>
+
+                <option value="offset_all">Offset Entire Inventory</option>
+              </select>
+
+              <label class="form-label">Discount CSV</label>
+
+              <input
+                type="file"
+                name="file"
+                accept=".csv"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+
+              <button type="submit" class="btn btn-primary">
+                Upload Discounts
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {% block content %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/memos.js') }}"></script>
   </body>
 </html>

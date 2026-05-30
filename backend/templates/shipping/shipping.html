@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Shipping Addresses</h3>
+
+    <!-- CREATE FORM -->
+    <div class="card mb-3">
+        <div class="card-header">Add Shipping Address</div>
+
+        <div class="card-body">
+
+            <form method="POST" action="/clients/{{ client_id }}/shipping/create">
+
+                <div class="row g-2">
+
+                    <div class="col-md-3">
+                        <input name="label" class="form-control" placeholder="Label (e.g. NY Office)">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input name="manager" class="form-control" placeholder="Manager">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input name="store_number" class="form-control" placeholder="Store #">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input name="phone" class="form-control" placeholder="Phone">
+                    </div>
+
+                    <div class="col-md-12">
+                        <textarea name="address" class="form-control" placeholder="Address" required></textarea>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input name="city" class="form-control" placeholder="City">
+                    </div>
+
+                    <div class="col-md-4">
+                        <input name="state" class="form-control" placeholder="State">
+                    </div>
+
+                    <div class="col-md-4">
+                        <input name="country" class="form-control" placeholder="Country">
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary mt-3">Add Address</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="card">
+
+        <div class="card-header">Existing Shipping Addresses</div>
+
+        <div class="card-body p-0">
+
+            <table class="table table-striped mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Manager</th>
+                        <th>Store #</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in addresses %}
+                    <tr>
+                        <td>{{ a.label }}</td>
+                        <td>{{ a.manager }}</td>
+                        <td>{{ a.store_number }}</td>
+                        <td>{{ a.address }}</td>
+                        <td>{{ a.phone }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

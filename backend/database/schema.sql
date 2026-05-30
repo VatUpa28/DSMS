@@ -100,11 +100,9 @@ CREATE TABLE rapaport_prices (
     price_date DATE NOT NULL
 );
 
-
-
-
 CREATE TABLE clients (
     id INTEGER PRIMARY KEY,
+    code TEXT NOT NULL,
     name TEXT NOT NULL,
     address TEXT NOT NULL,
 
@@ -130,6 +128,22 @@ CREATE TABLE client_contacts (
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
+CREATE TABLE shipping_addresses (
+    id INTEGER PRIMARY KEY,
+    client_id INTEGER NOT NULL,
+
+    label TEXT,
+    manager TEXT,
+    store_number TEXT,
+
+    address TEXT NOT NULL,
+    city TEXT,
+    state TEXT,
+    country TEXT,
+    phone TEXT,
+
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
 
 CREATE TABLE transactions (
     id INTEGER PRIMARY KEY,
@@ -137,13 +151,10 @@ CREATE TABLE transactions (
     client_id INTEGER NOT NULL,
 
     type TEXT NOT NULL CHECK (type IN ('memo','invoice','credit_invoice')),
-    reference_transaction INTEGER,
-
-    status TEXT NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('active','completed','cancelled')),
 
     person TEXT NOT NULL,
-    address TEXT NOT NULL,
-    phone TEXT NOT NULL,
+    phone TEXT,
     fax TEXT,
 
     date DATE NOT NULL,
@@ -153,12 +164,11 @@ CREATE TABLE transactions (
     shipment_type TEXT NOT NULL,
     ship_charge REAL NOT NULL,
 
-    ship_to_address TEXT NOT NULL,
-
+    ship_to_address_id INTEGER,
     purchase_order_number TEXT,
 
     FOREIGN KEY (client_id) REFERENCES clients(id),
-    FOREIGN KEY (reference_transaction) REFERENCES transactions(id)
+    FOREIGN KEY (ship_to_address_id) REFERENCES shipping_addresses(id)
 );
 
 
@@ -166,15 +176,51 @@ CREATE TABLE transaction_items (
     id INTEGER PRIMARY KEY,
 
     transaction_id INTEGER NOT NULL,
+
     stone_id INTEGER NOT NULL,
+    grading_report_id INTEGER NOT NULL,
 
-    status TEXT NOT NULL CHECK (status IN ('memo','invoiced','returned')),
+    status TEXT NOT NULL
+    CHECK (status IN ('memo','invoiced','returned')),
 
-    grading_report_id INTEGER,
+    -- SNAPSHOT DATA
 
-    FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
-    FOREIGN KEY (stone_id) REFERENCES stones(id),
-    FOREIGN KEY (grading_report_id) REFERENCES grading_reports(id),
+    stock_number TEXT NOT NULL,
+    report_number TEXT,
+
+    lab TEXT,
+
+    shape TEXT NOT NULL,
+    weight REAL NOT NULL,
+    color TEXT NOT NULL,
+    clarity TEXT NOT NULL,
+
+    cut TEXT,
+    polish TEXT,
+    symmetry TEXT,
+
+    fluorescence_intensity TEXT,
+
+    price_per_carat REAL NOT NULL,
+    total_price REAL NOT NULL,
+
+    FOREIGN KEY (transaction_id)
+        REFERENCES transactions(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (stone_id)
+        REFERENCES stones(id),
+
+    FOREIGN KEY (grading_report_id)
+        REFERENCES grading_reports(id),
 
     UNIQUE (transaction_id, stone_id)
 );
+
+CREATE INDEX idx_clients_code ON clients(code);
+
+CREATE INDEX idx_grading_reports_stone ON grading_reports(stone_id);
+
+CREATE INDEX idx_transaction_items_tx ON transaction_items(transaction_id);
+
+CREATE INDEX idx_transaction_items_stone ON transaction_items(stone_id);
