@@ -87,3 +87,27 @@ def get_client_by_code(code):
         "client": dict(client),
         "shipping_addresses": [dict(a) for a in addresses]
     })
+
+@clients_bp.route("/clients/<int:client_id>/contacts", methods=["GET"])
+def get_contacts(client_id):
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT name, phone, email
+        FROM client_contacts
+        WHERE client_id = ?
+    """, (client_id,))
+
+    rows = cur.fetchall()
+
+    contacts = [
+        {
+            "name": r["name"],
+            "phone": r["phone"],
+            "email": r["email"]
+        }
+        for r in rows
+    ]
+
+    return jsonify(contacts)

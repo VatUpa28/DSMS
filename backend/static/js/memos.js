@@ -1,33 +1,34 @@
 let clientData = null;
 
+/* ===================== CLIENT LOAD ===================== */
 async function loadClient() {
-  const code = document.getElementById("client_code").value;
+  const code = document.getElementById("client_code").value.trim();
+  if (!code) return alert("Enter client code");
 
   const res = await fetch(`/clients/by-code/${code}`);
-
-  if (!res.ok) {
-    alert("Client not found");
-    return;
-  }
+  if (!res.ok) return alert("Client not found");
 
   const data = await res.json();
-  clientData = data;
+  console.log("API RESPONSE:", data);
 
-  const c = data.client;
+  // FIX: normalize shape
+  const client = data.client || data;
 
-  document.getElementById("client_id").value = c.id;
-  document.getElementById("client_name").value = c.name;
-  document.getElementById("client_address").value = c.address;
+  clientData = client;
 
-  document.getElementById("ship_to_address").value = c.address;
+  document.getElementById("client_id").value = client.id || "";
+  document.getElementById("client_name").value = client.name || "";
+  document.getElementById("client_address").value = client.address || "";
+  document.getElementById("ship_to_address").value = client.address || "";
 }
 
+/* ===================== SHIPPING ===================== */
 function toggleShipping() {
   const checked = document.getElementById("alt_ship").checked;
 
   if (!checked && clientData) {
     document.getElementById("ship_to_address").value =
-      clientData.client.address;
+      clientData.client.address || "";
   }
 }
 
@@ -40,20 +41,29 @@ function openShippingModal() {
   const list = document.getElementById("shipping_list");
   list.innerHTML = "";
 
-  clientData.shipping_addresses.forEach((a) => {
+  const addresses = clientData.shipping_addresses || [];
+
+  if (addresses.length === 0) {
+    list.innerHTML = `<tr><td colspan="3">No addresses found</td></tr>`;
+  }
+
+  addresses.forEach((a) => {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-            <td>${a.label || ""}</td>
-            <td>${a.manager || ""}</td>
-            <td>${a.address}</td>
-            <td>
-                <button class="btn btn-sm btn-primary"
-                    onclick="selectShipping(${a.id})">
-                    Select
-                </button>
-            </td>
-        `;
+      <td>${a.label || ""}</td>
+      <td>${a.manager || ""}</td>
+      <td>${a.address || ""}</td>
+      <td>
+        <button type="button" class="btn btn-sm btn-primary">
+          Select
+        </button>
+      </td>
+    `;
+
+    row.querySelector("button").addEventListener("click", () => {
+      selectShipping(a);
+    });
 
     list.appendChild(row);
   });
@@ -61,13 +71,74 @@ function openShippingModal() {
   new bootstrap.Modal(document.getElementById("shippingModal")).show();
 }
 
-function selectShipping(id) {
-  const a = clientData.shipping_addresses.find((x) => x.id === id);
-
-  if (!a) return;
-
+function selectShipping(addr) {
   document.getElementById("ship_to_address").value =
-    `${a.address}, ${a.city || ""}, ${a.state || ""}, ${a.country || ""}`;
+    `${addr.address || ""}, ${addr.city || ""}, ${addr.state || ""}, ${addr.country || ""}`;
 
-  bootstrap.Modal.getInstance(document.getElementById("shippingModal")).hide();
+  const modalEl = document.getElementById("shippingModal");
+  bootstrap.Modal.getInstance(modalEl)?.hide();
+}
+
+/* ===================== CONTACT ===================== */
+async function openContactModal() {
+  console.log("OPEN CONTACT MODAL");
+
+  const clientId = document.getElementById("client_id").value;
+  console.log("clientId:", clientId);
+
+  const res = await fetch(`/clients/${clientId}/contacts`);
+  console.log("status:", res.status);
+
+  const data = await res.json();
+  console.log("raw contacts response:", data);
+
+  const contacts = Array.isArray(data) ? data : data.contacts || [];
+  console.log("normalized contacts:", contacts);
+
+  const tbody = document.getElementById("contact_list");
+  tbody.innerHTML = "";
+
+  contacts.forEach((c) => {
+    if (!c) return;
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${c.name || ""}</td>
+      <td>${c.phone || ""}</td>
+      <td>${c.email || ""}</td>
+      <td><button type="button" class="btn btn-sm btn-primary">Select</button></td>
+    `;
+
+    row.querySelector("button").onclick = () => selectContact(c);
+    tbody.appendChild(row);
+  });
+
+  const modalEl = document.getElementById("contactModal");
+  console.log("modal element:", modalEl);
+
+  bootstrap.Modal.getOrCreateInstance(modalEl).show();
+}
+function selectContact(contact) {
+  document.querySelector("input[name='person']").value = contact.name || "";
+
+  const modalEl = document.getElementById("contactModal");
+  bootstrap.Modal.getInstance(modalEl)?.hide();
+}
+
+async function handleReturn(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const res = await fetch(form.action, {
+    method: "POST",
+    body: new FormData(form)
+  });
+
+  if (!res.ok) {
+    console.error("Return failed");
+    return;
+  }
+
+  window.location.reload();
 }

@@ -1,79 +1,90 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <div class="container mt-4">
+  <h3>Client Contacts</h3>
 
-    <h3>Client Contacts</h3>
+  {% if not client_id %}
+  <div class="alert alert-danger">
+    Missing client_id — cannot load contacts page correctly.
+  </div>
+  {% endif %}
 
-    <!-- CREATE FORM -->
-    <div class="card mb-3">
-        <div class="card-header">Add Contact</div>
+  <!-- CREATE FORM -->
+  <div class="card mb-3">
+    <div class="card-header">Add Contact</div>
 
-        <div class="card-body">
+    <div class="card-body">
+      <form
+        method="POST"
+        action="{{ url_for('contacts.create_contact', client_id=client_id) }}"
+      >
+        <div class="row g-2">
+          <div class="col-md-3">
+            <input
+              name="name"
+              class="form-control"
+              placeholder="Name"
+              required
+            />
+          </div>
 
-            <form method="POST" action="/clients/{{ client_id }}/contacts/create">
+          <div class="col-md-3">
+            <input name="phone" class="form-control" placeholder="Phone" />
+          </div>
 
-                <div class="row g-2">
+          <div class="col-md-3">
+            <input name="email" class="form-control" placeholder="Email" />
+          </div>
 
-                    <div class="col-md-3">
-                        <input name="name" class="form-control" placeholder="Name" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <input name="phone" class="form-control" placeholder="Phone">
-                    </div>
-
-                    <div class="col-md-3">
-                        <input name="email" class="form-control" placeholder="Email">
-                    </div>
-
-                    <div class="col-md-3">
-                        <input name="cell" class="form-control" placeholder="Cell">
-                    </div>
-
-                </div>
-
-                <button class="btn btn-primary mt-3">Add Contact</button>
-
-            </form>
-
+          <div class="col-md-3">
+            <input name="cell" class="form-control" placeholder="Cell" />
+          </div>
         </div>
+
+        <button
+          class="btn btn-primary mt-3"
+          {%
+          if
+          not
+          client_id
+          %}disabled{%
+          endif
+          %}
+        >
+          Add Contact
+        </button>
+      </form>
     </div>
+  </div>
 
-    <!-- LIST -->
-    <div class="card">
+  <!-- LIST -->
+  <div class="card">
+    <div class="card-header">Existing Contacts</div>
 
-        <div class="card-header">Existing Contacts</div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Cell</th>
+          </tr>
+        </thead>
 
-        <div class="card-body p-0">
-
-            <table class="table table-striped mb-0">
-
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Cell</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for c in contacts %}
-                    <tr>
-                        <td>{{ c.name }}</td>
-                        <td>{{ c.phone }}</td>
-                        <td>{{ c.email }}</td>
-                        <td>{{ c.cell }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-
-            </table>
-
-        </div>
+        <tbody>
+          {% for c in contacts %}
+          <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.phone }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.cell }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-
+  </div>
 </div>
 
 {% endblock %}

@@ -11,6 +11,8 @@ DB_PATH = os.path.join(
     "app.db"
 )
 
+print(DB_PATH)
+print(os.path.exists(DB_PATH))
 
 def get_db():
 

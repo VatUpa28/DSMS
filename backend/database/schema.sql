@@ -147,11 +147,21 @@ CREATE TABLE shipping_addresses (
 
 CREATE TABLE transactions (
     id INTEGER PRIMARY KEY,
+    transaction_number TEXT NOT NULL UNIQUE,
 
     client_id INTEGER NOT NULL,
 
     type TEXT NOT NULL CHECK (type IN ('memo','invoice','credit_invoice')),
-    status TEXT NOT NULL CHECK (status IN ('active','completed','cancelled')),
+    status TEXT NOT NULL
+        CHECK (
+            status IN (
+                'draft',
+                'active',
+                'return',
+                'completed',
+                'cancelled'
+            )
+        ),
 
     person TEXT NOT NULL,
     phone TEXT,
@@ -181,7 +191,14 @@ CREATE TABLE transaction_items (
     grading_report_id INTEGER NOT NULL,
 
     status TEXT NOT NULL
-    CHECK (status IN ('memo','invoiced','returned')),
+        CHECK (
+            status IN (
+                'draft',
+                'active',
+                'return',
+                'returned'
+            )
+        ),
 
     -- SNAPSHOT DATA
 
