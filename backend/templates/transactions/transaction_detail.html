@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Transaction# {{ transaction.transaction_number }}</h2>
+<p>Status: {{ transaction.status }}</p>
+
+<!-- ================= RETURN FORM ================= -->
+<form method="POST"
+      action="{{ url_for('transactions.return_stones', transaction_id=transaction.id) }}">
+
+  <table class="table">
+    <tr>
+      <th></th>
+      <th>Stock</th>
+      <th>Status</th>
+    </tr>
+
+    {% for stone in stones %}
+    <tr>
+      <td>
+        <input
+          type="checkbox"
+          name="stone_ids"
+          value="{{ stone.stone_id }}"
+          {% if stone.status != 'active' %}disabled{% endif %}
+        />
+      </td>
+
+      <td>{{ stone.stock_number }}</td>
+      <td>{{ stone.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <button type="submit" class="btn btn-warning">
+    Mark Returning
+  </button>
+</form>
+
+<hr>
+
+<!-- ================= INVOICE FORM ================= -->
+<form method="POST"
+      action="{{ url_for('transactions.create_invoice_from_memo', transaction_id=transaction.id) }}">
+
+  <table class="table">
+    <tr>
+      <th></th>
+      <th>Stock</th>
+      <th>Status</th>
+    </tr>
+
+    {% for stone in stones %}
+    <tr>
+      <td>
+        <input
+          type="checkbox"
+          name="stone_ids"
+          value="{{ stone.stone_id }}"
+          {% if stone.status != 'active' %}disabled{% endif %}
+        />
+      </td>
+
+      <td>{{ stone.stock_number }}</td>
+      <td>{{ stone.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <button type="submit" class="btn btn-success">
+    Create Invoice
+  </button>
+</form>
+
+{% endblock %}

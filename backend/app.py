@@ -4,7 +4,7 @@ from routes.home import home_bp
 from routes.add import add_stone_bp, add_stones_bp
 from routes.discount import discount_bp
 from routes.upload_rapaport import upload_rapaport_bp
-from routes.memos import memos_bp
+from routes.transactions import transactions_bp
 from routes.clients import clients_bp
 from routes.contacts import contacts_bp
 from routes.shipping import shipping_bp
@@ -23,7 +23,7 @@ app.register_blueprint(discount_bp)
 app.register_blueprint(clients_bp)
 app.register_blueprint(contacts_bp)
 app.register_blueprint(shipping_bp)
-app.register_blueprint(memos_bp)
+app.register_blueprint(transactions_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)

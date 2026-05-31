@@ -132,7 +132,7 @@ async function handleReturn(e) {
   const form = e.target;
   const res = await fetch(form.action, {
     method: "POST",
-    body: new FormData(form)
+    body: new FormData(form),
   });
 
   if (!res.ok) {
@@ -141,4 +141,18 @@ async function handleReturn(e) {
   }
 
   window.location.reload();
+}
+
+function submitAction(action) {
+  const form = document.getElementById("memoForm");
+
+  const formData = new FormData(form);
+
+  // DEBUG
+  console.log([...formData.entries()]);
+
+  fetch(`/transactions/${TRANSACTION_ID}/create-invoice`, {
+    method: "POST",
+    body: formData,
+  });
 }

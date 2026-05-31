@@ -95,8 +95,8 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-5" href="{{ url_for('memos.memos') }}">
-                Memos
+              <a class="nav-link fs-5" href="{{ url_for('transactions.transactions') }}">
+                Transactions
               </a>
             </li>
           </ul>
@@ -742,6 +742,6 @@
       </div>
     </div>
     {% block content %}{% endblock %}
-    <script src="{{ url_for('static', filename='js/memos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/transactions.js') }}"></script>
   </body>
 </html>
