@@ -717,3 +717,168 @@ def create_invoice_from_memo(transaction_id):
     conn.close()
 
     return redirect("/transactions")
+
+@transactions_bp.route(
+    "/transactions/<int:transaction_id>/credit",
+    methods=["POST"]
+)
+def credit_invoice(transaction_id):
+
+    stone_ids = request.form.getlist("stone_ids")
+
+    if not stone_ids:
+        return "No stones selected", 400
+
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    # 1. Load invoice
+    cursor.execute("""
+        SELECT *
+        FROM transactions
+        WHERE id = ?
+        AND type = 'invoice'
+    """, (transaction_id,))
+
+    invoice = cursor.fetchone()
+
+    if not invoice:
+        conn.close()
+        return "Invalid invoice", 400
+
+    # 2. Get valid items from invoice
+    cursor.execute(f"""
+        SELECT *
+        FROM transaction_items
+        WHERE transaction_id = ?
+        AND stone_id IN ({",".join(["?"] * len(stone_ids))})
+        AND status = 'active'
+    """, (transaction_id, *stone_ids))
+
+    items = cursor.fetchall()
+
+    if not items:
+        conn.close()
+        return "No valid items selected", 400
+
+    # 3. Create CREDIT INVOICE
+    cursor.execute("""
+        INSERT INTO transactions (
+            transaction_number,
+            client_id,
+            type,
+            status,
+            parent_transaction_id,
+            person,
+            phone,
+            fax,
+            date,
+            terms,
+            carrier,
+            shipment_type,
+            ship_charge,
+            purchase_order_number
+        )
+        VALUES (?, ?, 'credit_invoice', 'active',
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        generate_transaction_number(cursor, "credit_invoice"),
+        invoice["client_id"],
+        transaction_id,
+        invoice["person"],
+        invoice["phone"],
+        invoice["fax"],
+        invoice["date"],
+        invoice["terms"],
+        invoice["carrier"],
+        invoice["shipment_type"],
+        invoice["ship_charge"],
+        invoice["purchase_order_number"]
+    ))
+
+    credit_id = cursor.lastrowid
+
+    # 4. Copy items into credit invoice
+    for item in items:
+        cursor.execute("""
+            INSERT INTO transaction_items (
+                transaction_id,
+                stone_id,
+                grading_report_id,
+                status,
+                stock_number,
+                report_number,
+                lab,
+                shape,
+                weight,
+                color,
+                clarity,
+                cut,
+                polish,
+                symmetry,
+                fluorescence_intensity,
+                price_per_carat,
+                total_price
+            )
+            VALUES (?, ?, ?, 'active',
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            credit_id,
+            item["stone_id"],
+            item["grading_report_id"],
+            item["stock_number"],
+            item["report_number"],
+            item["lab"],
+            item["shape"],
+            item["weight"],
+            item["color"],
+            item["clarity"],
+            item["cut"],
+            item["polish"],
+            item["symmetry"],
+            item["fluorescence_intensity"],
+            item["price_per_carat"],
+            item["total_price"]
+        ))
+
+    # 5. Mark original invoice items as credited
+    for item in items:
+        cursor.execute("""
+            UPDATE transaction_items
+            SET status = 'credited'
+            WHERE id = ?
+        """, (item["id"],))
+
+    # 6. Return stones to inventory
+    for item in items:
+        cursor.execute("""
+            UPDATE stones
+            SET status = 'B'
+            WHERE id = ?
+        """, (item["stone_id"],))
+
+    # 7. Close invoice if fully credited
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM transaction_items
+        WHERE transaction_id = ?
+        AND status = 'active'
+    """, (transaction_id,))
+
+    remaining = cursor.fetchone()[0]
+
+    if remaining == 0:
+        cursor.execute("""
+            UPDATE transactions
+            SET status = 'return'
+            WHERE id = ?
+        """, (transaction_id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(
+        url_for("transactions.view_transaction",
+                transaction_id=transaction_id)
+    )

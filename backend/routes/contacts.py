@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, url_for
 from database.db import get_db
 
 contacts_bp = Blueprint("contacts", __name__)
@@ -43,7 +43,10 @@ def create_contact(client_id):
         ))
 
         conn.commit()
-        return redirect(f"/clients/{client_id}/contacts")
+        conn.commit()
+        return redirect(
+            url_for("contacts.contacts", client_id=client_id)
+        )
 
     finally:
         conn.close()

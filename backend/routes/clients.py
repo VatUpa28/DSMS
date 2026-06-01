@@ -1,5 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, jsonify
 from database.db import get_db
+import sqlite3
 
 clients_bp = Blueprint("clients", __name__)
 
@@ -88,26 +89,22 @@ def get_client_by_code(code):
         "shipping_addresses": [dict(a) for a in addresses]
     })
 
-@clients_bp.route("/clients/<int:client_id>/contacts", methods=["GET"])
+@clients_bp.route("/api/clients/<int:client_id>/contacts")
 def get_contacts(client_id):
-    conn = get_db()
-    cur = conn.cursor()
 
-    cur.execute("""
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
         SELECT name, phone, email
         FROM client_contacts
         WHERE client_id = ?
     """, (client_id,))
 
-    rows = cur.fetchall()
+    rows = cursor.fetchall()
+    conn.close()
 
-    contacts = [
-        {
-            "name": r["name"],
-            "phone": r["phone"],
-            "email": r["email"]
-        }
-        for r in rows
-    ]
-
-    return jsonify(contacts)
+    return jsonify({
+        "contacts": [dict(r) for r in rows]
+    })

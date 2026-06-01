@@ -151,7 +151,13 @@ CREATE TABLE transactions (
 
     client_id INTEGER NOT NULL,
 
-    type TEXT NOT NULL CHECK (type IN ('memo','invoice','credit_invoice')),
+    type TEXT NOT NULL
+        CHECK (type IN (
+            'memo',
+            'invoice',
+            'credit_invoice'
+        )),
+
     status TEXT NOT NULL
         CHECK (
             status IN (
@@ -162,6 +168,8 @@ CREATE TABLE transactions (
                 'cancelled'
             )
         ),
+
+    parent_transaction_id INTEGER,
 
     person TEXT NOT NULL,
     phone TEXT,
@@ -177,8 +185,14 @@ CREATE TABLE transactions (
     ship_to_address_id INTEGER,
     purchase_order_number TEXT,
 
-    FOREIGN KEY (client_id) REFERENCES clients(id),
-    FOREIGN KEY (ship_to_address_id) REFERENCES shipping_addresses(id)
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (ship_to_address_id)
+        REFERENCES shipping_addresses(id),
+
+    FOREIGN KEY (parent_transaction_id)
+        REFERENCES transactions(id)
 );
 
 
@@ -190,17 +204,18 @@ CREATE TABLE transaction_items (
     stone_id INTEGER NOT NULL,
     grading_report_id INTEGER NOT NULL,
 
+    created_from_item_id INTEGER,
+
     status TEXT NOT NULL
         CHECK (
             status IN (
                 'draft',
                 'active',
                 'return',
-                'returned'
+                'returned',
+                'credited'
             )
         ),
-
-    -- SNAPSHOT DATA
 
     stock_number TEXT NOT NULL,
     report_number TEXT,
@@ -230,6 +245,9 @@ CREATE TABLE transaction_items (
 
     FOREIGN KEY (grading_report_id)
         REFERENCES grading_reports(id),
+
+    FOREIGN KEY (created_from_item_id)
+        REFERENCES transaction_items(id),
 
     UNIQUE (transaction_id, stone_id)
 );

@@ -14,7 +14,7 @@ async function loadClient() {
   // FIX: normalize shape
   const client = data.client || data;
 
-  clientData = client;
+  clientData = data;
 
   document.getElementById("client_id").value = client.id || "";
   document.getElementById("client_name").value = client.name || "";
@@ -81,26 +81,30 @@ function selectShipping(addr) {
 
 /* ===================== CONTACT ===================== */
 async function openContactModal() {
-  console.log("OPEN CONTACT MODAL");
-
   const clientId = document.getElementById("client_id").value;
+
   console.log("clientId:", clientId);
 
-  const res = await fetch(`/clients/${clientId}/contacts`);
-  console.log("status:", res.status);
+  if (!clientId) {
+    alert("Load client first");
+    return;
+  }
+
+  const res = await fetch(`/api/clients/${clientId}/contacts`);
+
+  if (!res.ok) {
+    console.error("Failed to load contacts");
+    return;
+  }
 
   const data = await res.json();
-  console.log("raw contacts response:", data);
 
-  const contacts = Array.isArray(data) ? data : data.contacts || [];
-  console.log("normalized contacts:", contacts);
+  const contacts = data.contacts || [];
 
   const tbody = document.getElementById("contact_list");
   tbody.innerHTML = "";
 
   contacts.forEach((c) => {
-    if (!c) return;
-
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -111,13 +115,13 @@ async function openContactModal() {
     `;
 
     row.querySelector("button").onclick = () => selectContact(c);
+
     tbody.appendChild(row);
   });
 
-  const modalEl = document.getElementById("contactModal");
-  console.log("modal element:", modalEl);
-
-  bootstrap.Modal.getOrCreateInstance(modalEl).show();
+  bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("contactModal"),
+  ).show();
 }
 function selectContact(contact) {
   document.querySelector("input[name='person']").value = contact.name || "";

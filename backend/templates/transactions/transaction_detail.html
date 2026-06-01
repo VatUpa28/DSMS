@@ -3,14 +3,37 @@
 <h2>Transaction# {{ transaction.transaction_number }}</h2>
 <p>Status: {{ transaction.status }}</p>
 
+<!-- ================= STONES ================= -->
+<table class="table">
+  <tr>
+    <th>Stock #</th>
+    <th>Status</th>
+  </tr>
+
+  {% for stone in stones %}
+  <tr>
+    <td>{{ stone.stock_number }}</td>
+    <td>{{ stone.status }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr />
+
+{% if transaction.type == 'memo' and transaction.status != 'completed' %}
+
 <!-- ================= RETURN FORM ================= -->
-<form method="POST"
-      action="{{ url_for('transactions.return_stones', transaction_id=transaction.id) }}">
+<form
+  method="POST"
+  action="{{ url_for('transactions.return_stones',
+                       transaction_id=transaction.id) }}"
+>
+  <h3>Return Stones</h3>
 
   <table class="table">
     <tr>
       <th></th>
-      <th>Stock</th>
+      <th>Stock #</th>
       <th>Status</th>
     </tr>
 
@@ -21,7 +44,13 @@
           type="checkbox"
           name="stone_ids"
           value="{{ stone.stone_id }}"
-          {% if stone.status != 'active' %}disabled{% endif %}
+          {%
+          if
+          stone.status
+          !="active"
+          %}disabled{%
+          endif
+          %}
         />
       </td>
 
@@ -31,21 +60,23 @@
     {% endfor %}
   </table>
 
-  <button type="submit" class="btn btn-warning">
-    Mark Returning
-  </button>
+  <button type="submit" class="btn btn-warning">Mark Returning</button>
 </form>
 
-<hr>
+<hr />
 
-<!-- ================= INVOICE FORM ================= -->
-<form method="POST"
-      action="{{ url_for('transactions.create_invoice_from_memo', transaction_id=transaction.id) }}">
+<!-- ================= CREATE INVOICE FORM ================= -->
+<form
+  method="POST"
+  action="{{ url_for('transactions.create_invoice_from_memo',
+                       transaction_id=transaction.id) }}"
+>
+  <h3>Create Invoice</h3>
 
   <table class="table">
     <tr>
       <th></th>
-      <th>Stock</th>
+      <th>Stock #</th>
       <th>Status</th>
     </tr>
 
@@ -56,7 +87,13 @@
           type="checkbox"
           name="stone_ids"
           value="{{ stone.stone_id }}"
-          {% if stone.status != 'active' %}disabled{% endif %}
+          {%
+          if
+          stone.status
+          !="active"
+          %}disabled{%
+          endif
+          %}
         />
       </td>
 
@@ -66,9 +103,39 @@
     {% endfor %}
   </table>
 
-  <button type="submit" class="btn btn-success">
-    Create Invoice
-  </button>
+  <button type="submit" class="btn btn-success">Create Invoice</button>
 </form>
 
-{% endblock %}
+{% elif transaction.type == 'invoice' and transaction.status != 'return' %}
+
+<!-- ================= CREDIT INVOICE FORM ================= -->
+<form
+  method="POST"
+  action="{{ url_for('transactions.credit_invoice',
+                       transaction_id=transaction.id) }}"
+>
+  <h3>Credit Invoice</h3>
+
+  <table class="table">
+    <tr>
+      <th></th>
+      <th>Stock #</th>
+      <th>Status</th>
+    </tr>
+
+    {% for stone in stones %} {% if stone.status == "active" %}
+    <tr>
+      <td>
+        <input type="checkbox" name="stone_ids" value="{{ stone.stone_id }}" />
+      </td>
+
+      <td>{{ stone.stock_number }}</td>
+      <td>{{ stone.status }}</td>
+    </tr>
+    {% endif %} {% endfor %}
+  </table>
+
+  <button type="submit" class="btn btn-danger">Credit Invoice</button>
+</form>
+
+{% endif %} {% endblock %}
