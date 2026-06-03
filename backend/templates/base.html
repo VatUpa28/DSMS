@@ -76,6 +76,15 @@
               Upload Discounts
             </button>
           </li>
+          <li>
+            <button
+              class="dropdown-item"
+              data-bs-toggle="modal"
+              data-bs-target="#returnModal"
+            >
+              Return
+            </button>
+          </li>
         </ul>
 
         <!-- NAV LINKS -->
@@ -748,6 +757,46 @@
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="returnModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Return Stones</h5>
+
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <input
+              id="barcodeInput"
+              class="form-control mb-3"
+              placeholder="Scan barcode"
+            />
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Stock #</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="returnList"></tbody>
+            </table>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-success" id="processReturnBtn">
+              Process Return
+            </button>
+          </div>
         </div>
       </div>
     </div>
