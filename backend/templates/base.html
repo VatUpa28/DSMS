@@ -33,7 +33,7 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          DS Management System
+          DSMS
         </a>
 
         <!-- DROPDOWN MENU -->
@@ -90,6 +90,11 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link fs-5" href="{{ url_for('barcode.barcodes') }}"
+                >Barcodes</a
+              >
+            </li>
+            <li class="nav-item">
               <a class="nav-link fs-5" href="{{ url_for('clients.clients') }}"
                 >Clients</a
               >
@@ -122,12 +127,13 @@
           <form method="POST" action="{{ url_for('add_stone.add_stone') }}">
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">Stock Number</label>
+                <label class="form-label">Stock Number Preview</label>
                 <input
                   type="text"
                   class="form-control"
-                  name="stock_number"
-                  required
+                  id="stockPreview"
+                  readonly
+                  placeholder="Auto Generated"
                 />
               </div>
               <div class="mb-3">
@@ -143,7 +149,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Shape</label>
-                <select class="form-select" name="shape" required>
+                <select class="form-select" name="shape" id="shape" required>
                   <option value="" disabled selected="selected"></option>
                   <option value="Round">Round</option>
                   <option value="Heart">Heart</option>
@@ -164,6 +170,7 @@
                   step="0.01"
                   class="form-control"
                   name="weight"
+                  id="weight"
                   required
                 />
               </div>
@@ -746,5 +753,6 @@
     </div>
     {% block content %}{% endblock %}
     <script src="{{ url_for('static', filename='js/transactions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stones.js') }}"></script>
   </body>
 </html>

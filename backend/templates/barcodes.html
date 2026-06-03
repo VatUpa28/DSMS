@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container py-4">
+
+    <h3 class="mb-4">Barcode Gallery</h3>
+
+    {% for s in stones %}
+    <div id="stone-{{ s.id }}" class="card mb-3 shadow-sm">
+
+        <div class="card-body text-center">
+
+            <img src="{{ url_for('static', filename=s.barcode_path) }}"
+                 class="img-fluid mb-2"
+                 style="max-height:120px;">
+
+            <h5>{{ s.stock_number }}</h5>
+
+            <a class="btn btn-sm btn-outline-primary"
+               href="{{ url_for('barcode.barcodes', stone_id=s.id) }}">
+                Open Print Page
+            </a>
+
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 CREATE TABLE stones (
     id INTEGER PRIMARY KEY,
     stock_number TEXT NOT NULL UNIQUE,
+    barcode_path TEXT NOT NULL UNIQUE,
 
     status TEXT NOT NULL,
 
@@ -250,6 +251,11 @@ CREATE TABLE transaction_items (
         REFERENCES transaction_items(id),
 
     UNIQUE (transaction_id, stone_id)
+);
+
+CREATE TABLE stock_number_sequence (
+    shape TEXT PRIMARY KEY,
+    last_number INTEGER NOT NULL
 );
 
 CREATE INDEX idx_clients_code ON clients(code);

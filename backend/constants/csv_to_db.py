@@ -1,5 +1,4 @@
 csv_to_db = {
-    "Stock #": "stock_number",
     "Availability": "status",
     "Shape": "shape",
     "Weight": "weight",

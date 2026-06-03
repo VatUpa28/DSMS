@@ -29,11 +29,20 @@ Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
 
       <tbody>
         {% for stone in stones %}
-        <tr>
-          {% for key in stones[0].keys() %}
+        <tr id="stone-{{ stone['id'] }}">
+          {% for key in stone.keys() %}
           <td style="font-size: 12px; white-space: nowrap; padding: 6px">
-            {% set value = stone[key] %} {% if value is string and
-            (value.startswith('http://') or value.startswith('https://')) %}
+            {% set value = stone[key] %} {% if key == 'stock_number' %}
+
+            <a
+              href="{{ url_for('barcode.barcodes') }}#stone-{{ stone['id'] }}"
+            >
+              {{ value }}
+            </a>
+
+            {% elif value is string and (value.startswith('http://') or
+            value.startswith('https://')) %}
+
             <a href="{{ value }}" target="_blank" rel="noopener noreferrer">
               {{ value }}
             </a>

@@ -1,12 +1,11 @@
 from flask import Blueprint, request, redirect, url_for
 from database.db import get_db
-from services.stone_service import create_stone
+from services.stone_service import create_stone, generate_stock_number
 from utils.stone_utils import get_size_from_weight
 from constants.stone_fields import (
-    allowed_stone_fields,
-    required_stone_fields
-)
+    allowed_stone_fields)
 from constants.csv_to_db import csv_to_db
+from utils.barcode_generator import generate_barcode
 import io, csv
 
 add_stone_bp = Blueprint("add_stone", __name__)
@@ -40,9 +39,6 @@ def add_stones():
 
         for row in reader:
 
-            # -------------------------
-            # STEP 1: normalize + map CSV
-            # -------------------------
             mapped = {}
 
             for k, v in row.items():
@@ -54,29 +50,18 @@ def add_stones():
                 if key in csv_to_db and v != "":
                     mapped[csv_to_db[key]] = v
 
-            # -------------------------
-            # STEP 2: split tables
-            # -------------------------
             stone_data = {
                 k: v for k, v in mapped.items()
                 if k in allowed_stone_fields
             }
+
+            stone_data["status"] = "Y"
 
             grading_data = {
                 k: v for k, v in mapped.items()
                 if k not in allowed_stone_fields
             }
 
-            # -------------------------
-            # STEP 3: validate stone fields
-            # -------------------------
-            for field in required_stone_fields:
-                if field not in stone_data or str(stone_data[field]).strip() == "":
-                    return {"error": f"Missing required field: {field}"}, 400
-
-            # -------------------------
-            # STEP 4: handle weight (GRADING TABLE)
-            # -------------------------
             weight = grading_data.get("weight")
 
             if weight is None or str(weight).strip() == "":
@@ -90,9 +75,14 @@ def add_stones():
             grading_data["weight"] = weight
             grading_data["size"] = get_size_from_weight(weight)
 
-            # -------------------------
-            # STEP 5: insert stone
-            # -------------------------
+            stone_data["stock_number"] = generate_stock_number(
+                cursor,
+                grading_data["shape"]
+            )
+
+            barcode_path = generate_barcode(stone_data["stock_number"])
+            stone_data["barcode_path"] = barcode_path
+            
             cols = ", ".join(stone_data.keys())
             qs = ", ".join(["?"] * len(stone_data))
 
@@ -103,9 +93,6 @@ def add_stones():
 
             stone_id = cursor.lastrowid
 
-            # -------------------------
-            # STEP 6: insert grading report
-            # -------------------------
             if grading_data:
                 grading_data["stone_id"] = stone_id
 

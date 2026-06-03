@@ -5,7 +5,3 @@ allowed_stone_fields = [
     "picture_link", "video_link",
     "current_country", "current_state", "current_city"
 ]
-
-required_stone_fields = [
-    "stock_number", "status"
-]
