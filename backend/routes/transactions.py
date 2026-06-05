@@ -388,51 +388,106 @@ def return_stones(transaction_id):
 
     return redirect(f"/transactions/{transaction_id}")
 
-@transactions_bp.route("/transactions/<int:transaction_id>/receive", methods=["POST"])
-def receive_return(transaction_id):
+@transactions_bp.route("/receive-stones", methods=["POST"])
+def receive_stones():
 
-    stone_ids = request.form.getlist("stone_ids")
+    data = request.get_json()
+
+    stone_ids = data.get("stone_ids", [])
+
+    if not stone_ids:
+        return jsonify({
+            "success": False,
+            "error": "No stones scanned"
+        }), 400
 
     conn = get_db()
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     for stone_id in stone_ids:
 
-        cursor.execute("""
-            UPDATE transaction_items
-            SET status = 'returned'
-            WHERE transaction_id = ?
-            AND stone_id = ?
-        """, (transaction_id, stone_id))
-
+        # B -> Y
         cursor.execute("""
             UPDATE stones
             SET status = 'Y'
             WHERE id = ?
         """, (stone_id,))
 
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM transaction_items
-        WHERE transaction_id = ?
-        AND status != 'returned'
-    """, (transaction_id,))
-
-    remaining = cursor.fetchone()[0]
-
-    if remaining == 0:
-
+        # mark credit invoice item returned
         cursor.execute("""
-            UPDATE transactions
-            SET status = 'cancelled'
-            WHERE id = ?
-        """, (transaction_id,))
+            UPDATE transaction_items
+            SET status = 'returned'
+            WHERE stone_id = ?
+            AND transaction_id IN (
+                SELECT id
+                FROM transactions
+                WHERE type = 'credit_invoice'
+                AND status = 'active'
+            )
+        """, (stone_id,))
+
+        # find credit invoice
+        cursor.execute("""
+            SELECT
+                t.id,
+                t.parent_transaction_id
+            FROM transactions t
+            JOIN transaction_items ti
+                ON ti.transaction_id = t.id
+            WHERE t.type = 'credit_invoice'
+            AND ti.stone_id = ?
+        """, (stone_id,))
+
+        credit = cursor.fetchone()
+
+        if not credit:
+            continue
+
+        credit_id = credit["id"]
+        invoice_id = credit["parent_transaction_id"]
+
+        # close credit invoice if fully returned
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM transaction_items
+            WHERE transaction_id = ?
+            AND status != 'returned'
+        """, (credit_id,))
+
+        remaining = cursor.fetchone()[0]
+
+        if remaining == 0:
+            cursor.execute("""
+                UPDATE transactions
+                SET status = 'completed'
+                WHERE id = ?
+            """, (credit_id,))
+
+        # close parent invoice if all credits completed
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM transactions
+            WHERE parent_transaction_id = ?
+            AND type = 'credit_invoice'
+            AND status != 'completed'
+        """, (invoice_id,))
+
+        remaining_credits = cursor.fetchone()[0]
+
+        if remaining_credits == 0:
+            cursor.execute("""
+                UPDATE transactions
+                SET status = 'completed'
+                WHERE id = ?
+            """, (invoice_id,))
 
     conn.commit()
     conn.close()
 
-    return redirect(f"/transactions/{transaction_id}")
-
+    return jsonify({
+        "success": True
+    })
 @transactions_bp.route("/transaction/<int:transaction_id>/create-invoice", methods=["POST"])
 def create_invoice(transaction_id):
 

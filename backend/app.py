@@ -9,6 +9,7 @@ from routes.clients import clients_bp
 from routes.contacts import contacts_bp
 from routes.shipping import shipping_bp
 from routes.barcode import barcode_bp
+from routes.api import api_bp
 import sqlite3
 import csv
 import io
@@ -26,6 +27,7 @@ app.register_blueprint(contacts_bp)
 app.register_blueprint(shipping_bp)
 app.register_blueprint(transactions_bp)
 app.register_blueprint(barcode_bp)
+app.register_blueprint(api_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
