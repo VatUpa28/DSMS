@@ -1,0 +1,17 @@
+.inventory-table {
+  padding: 0 1vw;
+}
+
+.dropdown-menu {
+  left: 10px !important;
+}
+
+.filter-container {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+}

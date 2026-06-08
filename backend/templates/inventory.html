@@ -1,25 +1,413 @@
 {% extends "base.html" %} {% block content %} {% set labels = { "stock_number":
 "Stock #", "status": "Status", "shape": "Shape", "weight": "CT", "size": "Size",
 "color": "Color", "clarity": "Clarity", "cut": "Cut", "polish": "Pol",
-"symmetry": "Sym", "fluorescence_intensity": "Flu", "fluorescence_color": "Flu
-Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
-"OvTone", "measurements": "Meas", "depth_percent": "Depth%", "table_percent":
-"Table%", "rapaport_price_per_carat": "Rap", "rapaport_discount": "Disc%",
-"price_per_carat": "p/ct", "total_price": "Total", "eye_clean": "EC", "bgm":
-"BGM", "black": "Blk", "milky": "Milky", "open_inclusion": "Open",
-"pair_number": "Pair #", "pair_stock_number": "Pair Stock", "pair_separable":
-"Sep", "picture_link": "Pic", "video_link": "Vid" } %}
+"symmetry": "Sym", "fluorescence_intensity": "Flu", "lab": "Lab" } %}
 
 <div class="inventory-table mt-4">
   <h1>Inventory</h1>
 
   {% if stones %}
+  <form method="GET" class="mb-3">
+    <div class="filter-container d-flex flex-wrap gap-3 align-items-start">
+      <!-- SHAPE -->
+      <div class="card p-3">
+        <strong>Shape</strong>
+        <div class="d-flex flex-column gap-1">
+          <!-- ADD OPTIONS HERE -->
+          <div class="d-flex flex-column gap-1">
+            {% for shape in ['RD','HS','PS','MQ','OV','AS','EC','CU','RA','PR'] %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="shape"
+                  value="{{ shape }}"
+                  {% if shape in request.args.getlist('shape') %}checked{% endif %}
+                >
+                {{ shape }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
 
+      <!-- SIZE -->
+      <div class="card p-3">
+        <strong>Size</strong>
+        <div class="d-flex flex-column gap-1">
+          {% set sizes = [
+          '0.18-','0.18+','0.23+','0.30+','0.40+','0.45+',
+          '0.50+','0.58+','0.70+','0.78+','0.90+','0.95+',
+          '1.00+','1.20+','1.50+','2.00+','3.00+','4.00+',
+          '5.00+','6.00+','7.00+','8.00+','9.00+','10.00+',
+          '11.00+','12.00+','13.00+','14.00+','15.00+'
+          ] %}
+
+          {% for size in sizes %}
+            <label>
+              <input
+                type="checkbox"
+                name="size"
+                value="{{ size }}"
+                {% if size in request.args.getlist('size') %}checked{% endif %}
+              >
+              {{ size }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- COLOR -->
+      <div class="card p-3">
+        <strong>Color</strong>
+        <div class="d-flex flex-column gap-1">
+          {% for color in ['D','E','F','G','H','I','J','K','L','M','N','O-P','Q-R','S-T','U-V','W-X','Y-Z'] %}
+            <label>
+              <input
+                type="checkbox"
+                name="color"
+                value="{{ color }}"
+                {% if color in request.args.getlist('color') %}checked{% endif %}
+              >
+              {{ color }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- CLARITY -->
+      <div class="card p-3">
+        <strong>Clarity</strong>
+        <div class="d-flex flex-column gap-1">
+          {% for clarity in ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','SI3','I1','I2','I3'] %}
+            <label>
+              <input
+                type="checkbox"
+                name="clarity"
+                value="{{ clarity }}"
+                {% if clarity in request.args.getlist('clarity') %}checked{% endif %}
+              >
+              {{ clarity }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- LAB + SUB FILTERS UNDER IT -->
+      <div class="d-flex flex-column gap-2">
+        <!-- LAB -->
+        <div class="card p-3">
+          <strong>Lab</strong>
+          <div class="d-flex flex-column gap-1">
+            {% for lab in ['GIA','IGI','EGL','HRD'] %}
+              <label>
+                <input
+                  type="checkbox"
+                  name="lab"
+                  value="{{ lab }}"
+                  {% if lab in request.args.getlist('lab') %}checked{% endif %}
+                >
+                {{ lab }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- CUT / POL / SYMM (HORIZONTAL ROW) -->
+        <div class="d-flex gap-2">
+          <div class="card p-3">
+            <strong>Cut</strong>
+            <div class="d-flex flex-column gap-1">
+              {% for grade in ['PO','FR','GD','VG','EX','ID'] %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="cut"
+                    value="{{ grade }}"
+                    {% if grade in request.args.getlist('cut') %}checked{% endif %}
+                  >
+                  {{ grade }}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="card p-3">
+            <strong>Pol</strong>
+            <div class="d-flex flex-column gap-1">
+              {% for grade in ['PO','FR','GD','VG','EX','ID'] %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="polish"
+                    value="{{ grade }}"
+                    {% if grade in request.args.getlist('polish') %}checked{% endif %}
+                  >
+                  {{ grade }}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="card p-3">
+            <strong>Symm</strong>
+            <div class="d-flex flex-column gap-1">
+              {% for grade in ['PO','FR','GD','VG','EX','ID'] %}
+                <label>
+                  <input
+                    type="checkbox"
+                    name="symmetry"
+                    value="{{ grade }}"
+                    {% if grade in request.args.getlist('symmetry') %}checked{% endif %}
+                  >
+                  {{ grade }}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-3">
+        <strong>Flu</strong>
+
+        <div class="d-flex flex-column gap-1">
+          {% for flu in ['N','FT','M','S','VS','SL','VSL'] %}
+            <label>
+              <input
+                type="checkbox"
+                name="fluorescence_intensity"
+                value="{{ flu }}"
+                {% if flu in request.args.getlist('fluorescence_intensity') %}checked{% endif %}
+              >
+              {{ flu }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- WEIGHT RANGE -->
+      <div class="d-flex flex-column gap-2">
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>Weight</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="weight_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('weight_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="weight_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('weight_max', '') }}"
+            />
+          </div>
+        </div>
+
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>Dep %</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="depth_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('depth_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="depth_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('depth_max', '') }}"
+            />
+          </div>
+        </div>
+
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>Tab</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="table_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('table_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="table_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('table_max', '') }}"
+            />
+          </div>
+        </div>
+
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>P/CT</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="ppc_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('ppc_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="ppc_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('ppc_max', '') }}"
+            />
+          </div>
+        </div>
+
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>Total</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="total_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('total_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="total_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('total_max', '') }}"
+            />
+          </div>
+        </div>
+
+        <div class="card p-3">
+          <div class="d-flex align-items-center gap-2">
+            <strong>Disc</strong>
+
+            <input
+              type="number"
+              step="0.01"
+              name="discount_min"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Min"
+              value="{{ request.args.get('discount_min', '') }}"
+            />
+
+            <span>-</span>
+
+            <input
+              type="number"
+              step="0.01"
+              name="discount_max"
+              class="form-control"
+              style="width: 80px"
+              placeholder="Max"
+              value="{{ request.args.get('discount_max', '') }}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="card p-3">
+        <strong>Stock #</strong>
+
+        <textarea
+          name="stock_numbers"
+          class="form-control mt-2"
+          rows="8"
+          placeholder="12345&#10;12346&#10;12347"
+        >{{ request.args.get('stock_numbers', '') }}</textarea>
+
+        <small class="text-muted">
+          One stock number per line
+        </small>
+      </div>
+
+      <!-- STATUS -->
+      <div class="card p-3">
+        <strong>Status</strong>
+        <div class="d-flex flex-column gap-1">
+          {% set statuses = {
+              'Y':'Available',
+              'H':'Hold',
+              'FM':'For Memo',
+              'M':'Memo',
+              'S':'Sold',
+              'I':'Intimation'
+          } %}
+
+          {% for code, label in statuses.items() %}
+            <label>
+              <input
+                type="checkbox"
+                name="status"
+                value="{{ code }}"
+                {% if code in request.args.getlist('status') %}checked{% endif %}
+              >
+              {{ label }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+  </form>
+
+  <!-- ================= TABLE ================= -->
   <div style="overflow-x: auto">
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
-          {% for key in stones[0].keys() %}
+          {% for key in display_columns %}
           <th style="font-size: 12px; white-space: nowrap; padding: 6px">
             {{ labels.get(key, key) }}
           </th>
@@ -29,26 +417,32 @@ Col", "fancy_color": "Fancy", "fancy_intensity": "Fancy Int", "overtone":
 
       <tbody>
         {% for stone in stones %}
-        <tr id="stone-{{ stone['id'] }}">
-          {% for key in stone.keys() %}
+        <tr>
+          {% for key in display_columns %}
           <td style="font-size: 12px; white-space: nowrap; padding: 6px">
-            {% set value = stone[key] %} {% if key == 'stock_number' %}
+            {% set value = stone[key] %}
 
-            <a
-              href="{{ url_for('barcode.barcodes') }}#stone-{{ stone['id'] }}"
-            >
-              {{ value }}
-            </a>
+            {% set url_fields = [
+              'certificate_image_link',
+              'picture_link',
+              'video_link'
+            ] %}
 
-            {% elif value is string and (value.startswith('http://') or
-            value.startswith('https://')) %}
+            {% if key == 'stock_number' %}
+                <a href="#">{{ value }}</a>
 
-            <a href="{{ value }}" target="_blank" rel="noopener noreferrer">
-              {{ value }}
-            </a>
+            {% elif key in url_fields and value %}
+                <a
+                    href="{{ value }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {{ value }}
+                </a>
 
-            {% elif value is not none and value != 'None' %} {{ value }} {%
-            endif %}
+            {% elif value is not none %}
+                {{ value }}
+            {% endif %}
           </td>
           {% endfor %}
         </tr>
