@@ -1,7 +1,7 @@
 let clientData = null;
 
 /* ===================== CLIENT LOAD ===================== */
-async function loadClient() {
+async function loadFullClient() {
   const code = document.getElementById("client_code").value.trim();
   if (!code) return alert("Enter client code");
 

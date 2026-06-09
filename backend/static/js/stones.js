@@ -19,7 +19,7 @@ function updateStockPreview() {
 
   if (!shape || isNaN(weight)) {
     preview.value = "";
-    return; 
+    return;
   }
 
   const shapeCode = SHAPE_CODES[shape] || "X";
@@ -39,32 +39,32 @@ async function loadClient() {
 
   const response = await fetch(`/clients/by-code/${code}`);
 
-  const client = await response.json();
+  const data = await response.json();
 
-  document.getElementById("client_id").value = client.id;
+  document.getElementById("client_id").value = data.client.id;
+  document.getElementById("client_name").value = data.client.name;
 
-  document.getElementById("client_name").value = client.name;
+  const holdButton = document.getElementById("holdButton");
 
-  document.getElementById("holdButton").disabled = false;
+  if (holdButton) {
+    holdButton.disabled = false;
+  }
 }
 
 async function showHoldInfo(stoneId) {
+  const response = await fetch(`/inventory/hold-info/${stoneId}`);
 
-    const response = await fetch(`/inventory/hold-info/${stoneId}`);
+  if (!response.ok) {
+    alert("Unable to load hold information");
+    return;
+  }
 
-    if (!response.ok) {
-        alert("Unable to load hold information");
-        return;
-    }
+  const data = await response.json();
 
-    const data = await response.json();
+  document.getElementById("holdClientText").innerText =
+    `On hold for ${data.client_name}`;
 
-    document.getElementById("holdClientText").innerText =
-        `On hold for ${data.client_name}`;
+  const modal = new bootstrap.Modal(document.getElementById("holdModal"));
 
-    const modal = new bootstrap.Modal(
-        document.getElementById("holdModal")
-    );
-
-    modal.show();
+  modal.show();
 }
