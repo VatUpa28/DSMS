@@ -4,6 +4,7 @@ CREATE TABLE stones (
     barcode_path TEXT NOT NULL UNIQUE,
 
     status TEXT NOT NULL,
+    hold_client_id INTEGER,
 
     shade TEXT,
     milky TEXT,

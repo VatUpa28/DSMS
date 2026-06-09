@@ -7,13 +7,75 @@
   <h1>Inventory</h1>
 
   {% if stones %}
+
+  <form
+    id="holdForm"
+    method="POST"
+    action="{{ url_for('inventory.hold_stones') }}"
+>
+    <input
+        type="hidden"
+        name="client_id"
+        id="client_id"
+    >
+</form>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Hold Stones
+    </div>
+
+    <div class="card-body">
+        <div class="row g-2">
+
+            <div class="col-md-2">
+                <input
+                    id="client_code"
+                    class="form-control"
+                    placeholder="Client Code"
+                >
+            </div>
+
+            <div class="col-md-2">
+                <button
+                    type="button"
+                    class="btn btn-secondary w-100"
+                    onclick="loadClient()"
+                >
+                    Load
+                </button>
+            </div>
+
+            <div class="col-md-4">
+                <input
+                    id="client_name"
+                    class="form-control"
+                    readonly
+                >
+            </div>
+
+            <div class="col-md-2">
+                <button
+                    type="submit"
+                    form="holdForm"
+                    class="btn btn-warning w-100"
+                    id="holdButton"
+                    disabled
+                >
+                    Put Selected Stones On Hold
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
   <form method="GET" class="mb-3">
     <div class="filter-container d-flex flex-wrap gap-3 align-items-start">
       <!-- SHAPE -->
       <div class="card p-3">
         <strong>Shape</strong>
         <div class="d-flex flex-column gap-1">
-          <!-- ADD OPTIONS HERE -->
           <div class="d-flex flex-column gap-1">
             {% for shape in ['RD','HS','PS','MQ','OV','AS','EC','CU','RA','PR'] %}
               <label>
@@ -407,6 +469,7 @@
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
+          <th>Select</th>
           {% for key in display_columns %}
           <th style="font-size: 12px; white-space: nowrap; padding: 6px">
             {{ labels.get(key, key) }}
@@ -418,25 +481,34 @@
       <tbody>
         {% for stone in stones %}
         <tr>
+          <td>
+            {% if stone.status == 'Y' %}
+            <input
+                type="checkbox"
+                name="stone_ids"
+                value="{{ stone.id }}"
+                form="holdForm"
+            >
+            {% endif %}
+          </td>
           {% for key in display_columns %}
           <td style="font-size: 12px; white-space: nowrap; padding: 6px">
             {% set value = stone[key] %}
 
-            {% set url_fields = [
-              'certificate_image_link',
-              'picture_link',
-              'video_link'
-            ] %}
+            {% if key == 'status' %}
+                {% if stone.status == "H" %}
+                    <a href="#" onclick="showHoldInfo({{ stone.id }}); return false;">
+                      H
+                    </a>
+                {% else %}
+                    {{ stone.status }}
+                {% endif %}
 
-            {% if key == 'stock_number' %}
+            {% elif key == 'stock_number' %}
                 <a href="#">{{ value }}</a>
 
             {% elif key in url_fields and value %}
-                <a
-                    href="{{ value }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a href="{{ value }}" target="_blank" rel="noopener noreferrer">
                     {{ value }}
                 </a>
 
@@ -451,6 +523,29 @@
     </table>
   </div>
 
+  <div class="modal fade" id="holdModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Hold Information
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+                <p id="holdClientText"></p>
+            </div>
+
+        </div>
+    </div>
+</div>
   {% else %}
   <p>No Stones Found</p>
   {% endif %}

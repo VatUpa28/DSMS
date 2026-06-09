@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from database.db import get_db
 
 inventory_bp = Blueprint("inventory", __name__)
@@ -160,3 +160,56 @@ def inventory():
 
     finally:
         conn.close()
+
+@inventory_bp.route("/hold-stones", methods=["POST"])
+def hold_stones():
+
+    client_id = request.form.get("client_id")
+    stone_ids = request.form.getlist("stone_ids")
+
+    if not client_id:
+        return "Client required", 400
+
+    if not stone_ids:
+        return "No stones selected", 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    placeholders = ",".join(["?"] * len(stone_ids))
+
+    cursor.execute(f"""
+    UPDATE stones
+    SET status = 'H',
+        hold_client_id = ?
+    WHERE id IN ({placeholders})
+""", [client_id] + stone_ids)
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("inventory.inventory"))
+
+@inventory_bp.route("/inventory/hold-info/<int:stone_id>")
+def hold_info(stone_id):
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT c.name
+        FROM stones s
+        JOIN clients c ON c.id = s.hold_client_id
+        WHERE s.id = ?
+          AND s.hold_client_id IS NOT NULL
+    """, (stone_id,))
+
+    row = cursor.fetchone()
+    conn.close()
+
+    if not row:
+        return jsonify({"error": "No active hold"}), 404
+
+    return jsonify({
+        "client_name": row["name"]
+    })
