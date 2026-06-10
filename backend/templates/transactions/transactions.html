@@ -218,6 +218,21 @@
             </div>
           </div>
 
+          <div class="card mb-3">
+            <div class="card-header">Scan Stones</div>
+
+            <div class="card-body">
+              <input
+                type="text"
+                id="memoBarcodeInput"
+                class="form-control"
+                placeholder="Scan barcode and press Enter"
+              />
+
+              <div id="selectedScans" class="mt-2"></div>
+            </div>
+          </div>
+
           <!-- ========== STONES ========== -->
           <div class="card">
             <div class="card-header">Stones</div>
@@ -244,6 +259,7 @@
                         type="checkbox"
                         name="stone_ids"
                         value="{{ stone.id }}"
+                        data-stock-number="{{ stone.stock_number }}"
                       />
                     </td>
                     <td>{{ stone.stock_number }}</td>
@@ -314,5 +330,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}

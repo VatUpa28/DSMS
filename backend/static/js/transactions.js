@@ -51,15 +51,15 @@ function openShippingModal() {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${a.label || ""}</td>
-      <td>${a.manager || ""}</td>
-      <td>${a.address || ""}</td>
-      <td>
-        <button type="button" class="btn btn-sm btn-primary">
-          Select
-        </button>
-      </td>
-    `;
+        <td>${a.label || ""}</td>
+        <td>${a.manager || ""}</td>
+        <td>${a.address || ""}</td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary">
+            Select
+          </button>
+        </td>
+      `;
 
     row.querySelector("button").addEventListener("click", () => {
       selectShipping(a);
@@ -108,11 +108,11 @@ async function openContactModal() {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${c.name || ""}</td>
-      <td>${c.phone || ""}</td>
-      <td>${c.email || ""}</td>
-      <td><button type="button" class="btn btn-sm btn-primary">Select</button></td>
-    `;
+        <td>${c.name || ""}</td>
+        <td>${c.phone || ""}</td>
+        <td>${c.email || ""}</td>
+        <td><button type="button" class="btn btn-sm btn-primary">Select</button></td>
+      `;
 
     row.querySelector("button").onclick = () => selectContact(c);
 
@@ -160,3 +160,44 @@ function submitAction(action) {
     body: formData,
   });
 }
+
+const memoForm = document.querySelector('form[action="/create-memo"]');
+
+memoForm.addEventListener("submit", (e) => {
+  if (document.activeElement.id === "barcodeInput") {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("memoBarcodeInput");
+  if (!input) return;
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+
+    const scanned = input.value.trim().toUpperCase();
+    if (!scanned) return;
+
+    const checkbox =
+      document.querySelector(`[data-stock-number="${scanned}"]`) ||
+      document.querySelector(`input[name="stone_ids"][value="${scanned}"]`);
+
+    if (!checkbox) {
+      console.log("NO MATCH:", scanned);
+      input.value = "";
+      return;
+    }
+
+    checkbox.checked = true;
+
+    checkbox.closest("tr")?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    input.value = "";
+  });
+});

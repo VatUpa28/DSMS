@@ -935,5 +935,5 @@ def credit_invoice(transaction_id):
 
     return redirect(
         url_for("transactions.view_transaction",
-                transaction_id=transaction_id)
+            transaction_id=transaction_id)
     )

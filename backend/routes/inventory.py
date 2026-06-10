@@ -112,7 +112,7 @@ def inventory():
             "rapaport_price_per_carat",
             "rapaport_discount",
             "price_per_carat",
-            "total", 
+            "total_price", 
             "lab", 
             "cut", 
             "polish", 

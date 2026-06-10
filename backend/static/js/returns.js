@@ -1,6 +1,6 @@
 const scanned = [];
 
-const input = document.getElementById("barcodeInput");
+const input = document.getElementById("returnBarcodeInput");
 
 if (input) {
 
